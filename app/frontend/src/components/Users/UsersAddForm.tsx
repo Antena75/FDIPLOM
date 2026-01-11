@@ -26,22 +26,6 @@ function UserAddForm() {
     try {
       e.preventDefault();
 
-      // if (regData.email.length === 0) {
-      //   iziToast.warning({
-      //     message: 'Введите почту!',
-      //     position: 'bottomCenter',
-      //   });
-      //   return;
-      // }
-
-      // if (regData.name.length === 0) {
-      //   iziToast.warning({
-      //     message: 'Введите имя!',
-      //     position: 'bottomCenter',
-      //   });
-      //   return;
-      // }
-
       if (regData.password.length < 6) {
         iziToast.warning({
           message: 'Пароль должен содержать 6 и более символов!',
@@ -50,13 +34,13 @@ function UserAddForm() {
         return;
       }
 
-      // if (regData.name.length === 0) {
-      //   iziToast.warning({
-      //     message: 'Роль одна из: admin manager client',
-      //     position: 'bottomCenter',
-      //   });
-      //   return;
-      // }
+      if (regData.role !== 'admin' && regData.role !== 'client' && regData.role !== 'manager' && regData.role !== '') {
+        iziToast.warning({
+          message: 'Роль одна из: admin manager client',
+          position: 'bottomCenter',
+        });
+        return;
+      }
 
       authUser.register(regData)
         .then(() => {
@@ -87,7 +71,7 @@ function UserAddForm() {
         <Form.Control type="text" className="mb-3" placeholder="Введите имя пользователя" onChange={(e) => setRegData({ ...regData, name: e.target.value })} required />
         <Form.Control type="tel" className="mb-3" placeholder="Введите телефон пользователя (необязательно)" onChange={(e) => setRegData({ ...regData, contactPhone: e.target.value })} />
         <Form.Control type="password" className="mb-3" placeholder="Введите пароль пользователя (не менне 6 символов)" onChange={(e) => setRegData({ ...regData, password: e.target.value })} required />
-        <Form.Control type="text" className="mb-3" placeholder="Введите роль пользователя (admin, manager, client)" onChange={(e) => setRegData({ ...regData, role: e.target.value })} required />
+        <Form.Control type="text" className="mb-3" placeholder="Введите роль пользователя (admin, manager, client)" onChange={(e) => setRegData({ ...regData, role: e.target.value })} />
       <Button variant="primary" type="submit">
         Создать
       </Button>
@@ -96,10 +80,3 @@ function UserAddForm() {
 }
 
 export default UserAddForm
-
-
-                /* <DropdownButton title="Выдать роль">
-                  <Dropdown.Item onClick={() => handleChangeRole(elem._id, 'client')}>Клиент</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleChangeRole(elem._id, 'manager')}>Менеджер</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleChangeRole(elem._id, 'admin')}>Админ</Dropdown.Item>
-                </DropdownButton> */
