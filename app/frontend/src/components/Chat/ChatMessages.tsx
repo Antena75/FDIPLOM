@@ -14,7 +14,7 @@ function ChatMessages(data: propData) {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }); // не помогает
-    messagesEndRef.current.scrollTop = 99999;
+    // messagesEndRef.current.scrollTop = 99999;
   }
 
   useEffect(() => {

@@ -5,15 +5,11 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { ID } from '../../supports/types/type.id';
+import { ID } from '../type.id';
 import { UsersService } from '../users/users.service';
-import { SupportService } from './support.service';
+import { SupportService } from './services/support.service';
 
-@WebSocketGateway({
-  cors: {
-    origin: '*',
-  },
-})
+@WebSocketGateway({ cors: true })
 export class SupportGateway {
   constructor(
     private supportService: SupportService,
@@ -25,14 +21,14 @@ export class SupportGateway {
     @MessageBody() payload: { chatId: ID },
     @ConnectedSocket() client: Socket,
   ) {
-    return this.supportService.subscribe(async (supportRequest, message) => {
-      if (supportRequest._id.toString() === payload.chatId) {
-        const { _id, sentAt, text, readAt, authorId } = message;
+    return this.supportService.subscribe(async (chat, message) => {
+      if (chat._id.toString() === payload.chatId) {
+        const { _id, readAt, text, authorId } = message;
         const { _id: userId, name } =
           await this.usersService.findById(authorId);
         const response = {
           _id,
-          sentAt,
+          sentAt: message['sentAt'],
           text,
           readAt,
           author: {
@@ -40,6 +36,7 @@ export class SupportGateway {
             name: name,
           },
         };
+        // console.log(response)
         client.emit('subscribeToChat', response);
       }
     });

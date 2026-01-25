@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from '../users/users.service';
-import { IJwtPayload } from './interfaces/jwt.payload';
+import { IJwtPayload } from './interfaces/jwtpayload';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -16,15 +16,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IJwtPayload) {
-
     const user = await this.userService.findByEmail(payload.email);
-
     if (!user) {
       throw new UnauthorizedException(
         'Доступно только для авторизованных пользователей',
       );
     }
-
     return user;
   }
 }

@@ -2,19 +2,20 @@ import { Button, Container, Navbar, OverlayTrigger, Popover } from "react-bootst
 import { Link } from "react-router-dom"
 import HeaderAuth from "./HeaderAuth"
 import HeaderReg from "./HeaderReg"
-import SocketHiddenDiv from "./SocketHiddenDiv"
-import { useAuth } from "../../hooks/useAuth";
+// import SocketHiddenDiv from "./SocketHiddenDiv"
+// import { useAuth } from "../../hooks/useAuth";
+import { useAppSelector } from "../../store/hooks";
 import ButtonLogout from "./ButtonLogout";
 
 function HeaderMain() {
-  const isAuth = useAuth();
+  const isAuth = useAppSelector(state => state.user.isAuth);
   return (
     <Container>
       <Navbar bg="white" expand="lg" className="mt-3 mb-4 shadow-sm rounded">
         <Container>
           <Link className="navbar-brand fw-bold text-uppercase" to="/">
-            <img srcSet="../src/assets/img/hotel.png" alt="FindHotels" />
-            Find Hotels
+            <img srcSet="../src/assets/img/home.jpg" alt="The Best Hotels" />
+            The Great Library
           </Link>
           <div style={{display: "flex"}}>
           <Navbar.Toggle />
@@ -60,7 +61,7 @@ function HeaderMain() {
           </div>
         </Container>
       </Navbar>
-      <SocketHiddenDiv />
+      {/* <SocketHiddenDiv /> */}
     </Container>
   )
 }

@@ -2,8 +2,8 @@ import iziToast from "izitoast";
 import { useEffect, useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import useFetchData from "../../api/useFetchData";
-import { useSocketEvent } from "../../hooks/useSocketEvent";
+import API from "../../api/API";
+import { useSocketEvent } from "../Header/hooks/useSocketEvent";
 import { useAppSelector } from "../../store/hooks";
 import { SocketDto } from "../../types/interfaces";
 import LoaderMain from "../Loader/LoaderMain";
@@ -17,10 +17,10 @@ function ChatMain() {
   const user = useAppSelector(state => state.user);
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
-  const { supportRequestApi } = useFetchData();
+  const { supportRequestAPI } = API();
 
   const listener = (socketDto: SocketDto) => {
-    console.log(socketDto);
+    // console.log(socketDto);
     if (user.id !== socketDto.author.id) {
       setMessages([...messages, {
         _id: socketDto._id,
@@ -41,15 +41,15 @@ function ChatMain() {
         });
       }
 
-      const supportRequestId: any = queryParams.get('id');
+      const chatId: any = queryParams.get('id');
 
       const sendMessageDto: any = {
         authorId: user.id,
-        supportRequestId,
+        chatId,
         text,
       }
 
-      supportRequestApi.sendMessage(sendMessageDto)
+      supportRequestAPI.sendMessage(sendMessageDto)
         .then(result => {
           setMessages([...messages, result.data]);
         })
@@ -68,7 +68,7 @@ function ChatMain() {
     try {
       const supportRequestId: any = queryParams.get('id');
 
-      supportRequestApi.closeRequest(supportRequestId)
+      supportRequestAPI.closeRequest(supportRequestId)
         .then(() => {          
           iziToast.success({
             message: 'Вы успешно закрыли обращение',
@@ -93,16 +93,16 @@ function ChatMain() {
       return;
     }
 
-    const supportRequestId: any = queryParams.get('id');
+    const chatId: any = queryParams.get('id');
     const requestUserId: any = user.id;
 
-    supportRequestApi.getMessages(supportRequestId, requestUserId)
+    supportRequestAPI.getMessages(chatId, requestUserId)
       .then(result => {
         setMessages(result.data);
         setLoading(false);
-        supportRequestApi.readMessages({
+        supportRequestAPI.readMessages({
           userId: requestUserId,
-          supportRequestId,
+          chatId,
           createdBefore: new Date(),
         });
       })
@@ -121,7 +121,7 @@ function ChatMain() {
         <Container>
           <p className="fs-2 fw-semibold">Чат с пользователем</p>
           <p className="text-muted">Пользователь: {queryParams.get('email')}</p>
-          {(user.role === 'manager' || user.role === 'admin') &&
+          {user.role === 'manager' &&
             <Button variant="danger" onClick={handleCloseRequest}>Закрыть</Button>
           }
         </Container>

@@ -2,14 +2,14 @@ import iziToast from "izitoast";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import useFetchData from "../../api/useFetchData";
+import API from "../../api/API";
 import { useAppDispatch } from "../../store/hooks";
-import { login } from "../../store/user/userSlice";
+import { login } from "../../store/slices/userSlice";
 
 function FormAuth() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { authUser } = useFetchData();
+  const { authUserAPI } = API();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ function FormAuth() {
         return;
       }
 
-      authUser.login(email, password)
+      authUserAPI.login(email, password)
         .then(result => {
           dispatch(login({ token: result.data.token, role: result.data.role, id: result.data.id }));
           iziToast.success({

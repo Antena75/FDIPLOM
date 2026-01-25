@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import { getToken } from "../helpers/localStorage.helpers";
+import { getToken } from "../tokens/token";
 
-async function fetchData(url: string, opts: object, isFormData = false, callback?: () => void): Promise<AxiosResponse> { 
+async function fetchData(url: string, options: object, isFormData = false, callback?: () => void): Promise<AxiosResponse> { 
   return new Promise((resolve, reject) => {
     axios({
       baseURL: `${import.meta.env.VITE_MAIN_URL}`,
@@ -11,7 +11,7 @@ async function fetchData(url: string, opts: object, isFormData = false, callback
         'Content-Type': isFormData === true ? 'multipart/form-data' : 'application/json',
       },
       // responseType: 'json',
-      ...opts,
+      ...options,
     })
       .then(result => {    
         resolve(result);

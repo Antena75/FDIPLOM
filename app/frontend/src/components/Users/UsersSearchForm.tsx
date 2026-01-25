@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useAppDispatch } from "../../store/hooks";
-import { setUsersState } from "../../store/users/usersSlice";
+import { setUsersState } from "../../store/slices/usersSlice";
 import { SearchUsersDto } from "../../types/interfaces";
 
 function UsersSearchForm() {

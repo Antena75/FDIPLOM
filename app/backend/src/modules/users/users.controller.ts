@@ -7,50 +7,48 @@ import {
   Post,
   Query,
   UseGuards,
+  SetMetadata
 } from '@nestjs/common';
-import { Roles } from '../../supports/decorators/roles.decorator';
-import { JwtAuthGuard } from '../../supports/guard/auth.guard';
-import { RolesGuard } from '../../supports/guard/roles.guard';
-import { ID } from '../../supports/types/type.id';
-import { SearchUsersDto } from './interfaces/searchuser.dto';
-import { UpdateRoleDto } from './interfaces/updaterole.dto';
-import { Users } from './schema/users.schema';
+// import { Roles } from '../../supports/decorators/roles.decorator';
+import { JwtGuard, RolesGuard } from '../auth.guard';
+// import { RolesGuard } from '../../supports/guard/roles.guard';
+import { ID } from '../type.id';
+import { SearchUsersDto } from './interfaces/search.user';
+// import { UpdateRoleDto } from './interfaces/updaterole.dto';
+import { Users } from './users.schema';
 import { UsersService } from './users.service';
-import { RegisterDto } from '../auth/interfaces/register.dto';
-import { ReturnDataDto } from '../auth/interfaces/returnData.dto';
-import { AuthService } from '../auth/auth.service';
+import { RegisterUserDto } from './interfaces/register.user';
+import { ReturnDataDto } from '../auth/interfaces/returndata';
+// import { AuthService } from '../auth/auth.service';
 
 @Controller('api/users')
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(
     private usersService: UsersService,
-    private authService: AuthService
+    // private authService: AuthService
   ) {}
 
   @Get()
-  @Roles('admin', 'manager')
+  @UseGuards(JwtGuard, RolesGuard)
+  @SetMetadata('roles', ['admin', 'manager']) 
   searchUsers(
-    @Query() searchParams: Partial<SearchUsersDto>,
+    @Query() params: Partial<SearchUsersDto>,
   ): Promise<Users[]> {
-    return this.usersService.findAll(searchParams);
+    return this.usersService.findAll(params);
   }
 
-  @Put(':id')
-  @Roles('admin')
-  updateRole(
-    @Param('id') userId: ID,
-    @Body() updateRoleDto: UpdateRoleDto,
-  ): Promise<Users> {
-    return this.usersService.updateRole(userId, updateRoleDto.role);
-  }
-
-  
   @Post()
-  @Roles('admin')
-  signUp(
-    @Body() registerDto: RegisterDto): Promise<ReturnDataDto> {   
-    return this.authService.register(registerDto);
+  @UseGuards(JwtGuard, RolesGuard)
+  @SetMetadata('roles', ['admin']) 
+  signUpAdmin(
+    @Body() dataReg: RegisterUserDto): Promise<ReturnDataDto> {   
+    return this.usersService.register(dataReg);
+  }
+
+  @Post('/register')
+  signUpClient(
+    @Body() dataReg: RegisterUserDto): Promise<ReturnDataDto> {   
+    return this.usersService.register(dataReg);
   }
 }
 

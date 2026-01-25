@@ -6,20 +6,25 @@ export interface UserData {
   contactPhone?: string;
 }
 
-export interface HotelData {
+export interface LibraryData {
   _id: string;
-  title: string;
+  name: string;
+  address: string;
   description: string;
   images: string[],
 }
 
-export interface HotelRoomData {
+export interface BookData {
   _id: string,
-  hotel: string;
+  library: string;
   title: string;
+  author: string;
+  year: string;
   description: string;
   images: string[];
-  isEnabled: boolean;
+  isAvailable: boolean;
+  totalCopies: string;
+  availableCopies: string;
 }
 
 export interface RegData {
@@ -30,26 +35,20 @@ export interface RegData {
   role?: string;
 }
 
-// export interface CreateData {
-//   email: string;
-//   name: string;
-//   password: string;
-//   contactPhone?: string;
-//   role: string;
-// }
-
-export interface SearchHotelsDto {
+export interface SearchLibrariesDto {
   limit?: number;
   offset?: number;
-  title?: string;
+  name?: string;
+  // address?: string;
 }
 
-export interface SearchRoomsDto {
-  hotel: string;
+export interface SearchBooksDto {
+  library: string;
   limit?: number;
   offset?: number;
   title?: string;
-  isEnabled?: boolean;
+  author?: string;
+  isAvailable?: boolean;
 }
 
 export interface SearchUsersDto {
@@ -60,23 +59,23 @@ export interface SearchUsersDto {
   contactPhone: string;
 }
 
-export interface AddReservationDto {
+export interface AddRentalDto {
   userId: string | null;
-  hotelId: string;
-  roomId: string;
+  libraryId: string;
+  bookId: string;
   dateStart: string;
   dateEnd: string;
 }
 
-export interface SearchReservationsDto {
+export interface SearchRentalsDto {
   userId: string;
 }
 
-export interface ReservationData {
+export interface RentalData {
   _id: string;
   userId: { _id: string, email: string };
-  hotelId: { _id: string, title: string };
-  roomId: { _id: string, title: string };
+  libraryId: { _id: string, name: string };
+  bookId: { _id: string, title: string };
   dateStart: string,
   dateEnd: string,
 }
@@ -93,13 +92,13 @@ export interface GetChatListParams {
 
 export interface SendMessageDto {
   authorId: string;
-  supportRequestId: string;
+  chatId: string;
   text: string;
 }
 
 export interface MarkMessagesAsReadDto {
   userId: string;
-  supportRequestId: string;
+  chatId: string;
   createdBefore: Date;
 }
 

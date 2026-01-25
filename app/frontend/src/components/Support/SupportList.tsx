@@ -1,6 +1,6 @@
 import iziToast from "izitoast";
 import { useEffect, useState } from "react";
-import useFetchData from "../../api/useFetchData";
+import API from "../../api/API";
 import { useAppSelector } from "../../store/hooks";
 import { GetChatListParams } from "../../types/interfaces";
 import LoaderMain from "../Loader/LoaderMain";
@@ -11,7 +11,7 @@ function SupportList() {
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const user = useAppSelector(state => state.user);
-  const { supportRequestApi } = useFetchData();
+  const { supportRequestAPI } = API();
 
   useEffect(() => {
     setError(false);
@@ -22,11 +22,11 @@ function SupportList() {
       isActive: true,
     }
 
-    if (user.role === 'manager' || user.role === 'admin') {
+    if (user.role === 'manager') {
       query.userId = null;
     }
 
-    supportRequestApi.findRequests(query)
+    supportRequestAPI.findRequests(query)
       .then(result => {  
         setList(result.data);
         setLoading(false);

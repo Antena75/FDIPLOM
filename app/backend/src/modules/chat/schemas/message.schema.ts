@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, HydratedDocument } from 'mongoose';
-import { ID } from '../../../supports/types/type.id';
+import { ID } from '../../type.id';
 
 export type MessageDocument = HydratedDocument<Message>;
 
-@Schema()
+@Schema({
+  timestamps: { createdAt: 'sentAt', updatedAt: false}
+})
 export class Message extends Document {
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Users' })
   authorId: ID;
@@ -12,10 +14,10 @@ export class Message extends Document {
   @Prop({ required: true })
   text: string;
 
-  @Prop({ required: true })
-  sentAt: Date;
+  // @Prop()
+  // sentAt: Date;
 
-  @Prop({ required: false })
+  @Prop({default: null})
   readAt: Date;
 }
 

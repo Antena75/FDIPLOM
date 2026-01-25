@@ -4,7 +4,7 @@ import { Button, Container, Pagination, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // import useFetchData from "../../api/useFetchData";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUsersState } from "../../store/users/usersSlice";
+import { setUsersState } from "../../store/slices/usersSlice";
 import { UserData } from "../../types/interfaces";
 
 interface propData {
@@ -71,8 +71,8 @@ function UsersTable(data: propData) {
               <td>{elem.role}</td>
               <td>
                 {elem.role === 'client' &&
-                  <Link to={`/reservations?id=${elem._id}`} className="text-decoration-none">
-                    <Button variant="warning" className="mb-1">Бронирования</Button>
+                  <Link to={`/rentals?id=${elem._id}`} className="text-decoration-none">
+                    <Button variant="warning" className="mb-1">Книги в аренде</Button>
                   </Link>
                 }
               </td>

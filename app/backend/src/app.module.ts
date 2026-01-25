@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 // import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppGateway } from './app.gateway';
+// import { AppGateway } from './app.gateway';
 import { AuthModule } from './modules/auth/auth.module';
-import { HotelroomsModule } from './modules/hotelrooms/hotelrooms.module';
-import { HotelsModule } from './modules/hotels/hotels.module';
-import { ReservationsModule } from './modules/reservations/reservations.module';
-import { SocketModule } from './modules/socket/socket.module';
+import { BooksModule } from './modules/books/books.module';
+import { LibrariesModule } from './modules/libraries/libraries.module';
+import { RentalsModule } from './modules/rentals/rentals.module';
+// import { SocketModule } from './modules/socket/socket.module';
 import { SupportModule } from './modules/chat/support.module';
 import { UsersModule } from './modules/users/users.module';
 
@@ -27,13 +27,13 @@ import { UsersModule } from './modules/users/users.module';
     }),
     UsersModule,
     AuthModule,
-    HotelsModule,
-    HotelroomsModule,
-    ReservationsModule,
+    LibrariesModule,
+    BooksModule,
+    RentalsModule,
     SupportModule,
-    SocketModule,
+    // SocketModule,
   ],
   controllers: [],
-  providers: [AppGateway],
+  // providers: [AppGateway],
 })
 export class AppModule {}

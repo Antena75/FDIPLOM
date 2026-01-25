@@ -10,9 +10,9 @@ function ChatMessageItem(data: propData) {
   const { message } = data;
   const user = useAppSelector(state => state.user);
 
-  let background = '#e8f1f3';
+  let background = '#f077de';
   if (message.authorId !== user.id) {
-    background = '#efefef';
+    background = '#55d275';
   }
 
   return (

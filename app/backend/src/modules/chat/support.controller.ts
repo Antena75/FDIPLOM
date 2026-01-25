@@ -7,22 +7,22 @@ import {
   Query,
   Request,
   UseGuards,
+  SetMetadata
 } from '@nestjs/common';
-import { Roles } from '../../supports/decorators/roles.decorator';
-import { JwtAuthGuard } from '../../supports/guard/auth.guard';
-import { RolesGuard } from '../../supports/guard/roles.guard';
-import { ID } from '../../supports/types/type.id';
-import { CreateSupportRequestDto } from './dto/create-support.dto';
-import { GetChatListParams } from './dto/get-requests.dto';
-import { MarkMessagesAsReadDto } from './dto/mark-message.dto';
-import { SendMessageDto } from './dto/send-message.dto';
-import { Message } from './schemas/message.schema';
-import { Support } from './schemas/support.schema';
-import { SupportClientService } from './support.client.service';
-import { SupportEmployeeService } from './support.employee.service';
-import { SupportService } from './support.service';
+import { JwtGuard, RolesGuard} from '../auth.guard';
+import { ID } from '../type.id';
+import { CreateRequestDto } from './interfaces/create.request';
+import { ClientAnswerDto } from './interfaces/client.answer';
+import { GetChatListParams } from './interfaces/get.params';
+import { MarkMessagesAsReadDto } from './interfaces/mark.message';
+import { SendMessageDto } from './interfaces/send.message';
+import { Message, MessageDocument } from './schemas/message.schema';
+import { Chat, ChatDocument } from './schemas/chat.schema';
+import { SupportClientService } from './services/support.client.service';
+import { SupportEmployeeService } from './services/support.employee.service';
+import { SupportService } from './services/support.service';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('api/support')
 export class SupportController {
   constructor(
@@ -31,70 +31,67 @@ export class SupportController {
     private supportEmployeeService: SupportEmployeeService,
   ) {}
 
-  @Roles('client')
+  
   @Post()
-  async createSupportRequest(@Body() body: CreateSupportRequestDto) {
-    const newRequest =
-      await this.supportClientService.createSupportRequest(body);
-
+  @SetMetadata('roles', ['client']) 
+  async createSupportRequest(@Body() dataReq: CreateRequestDto): Promise <ClientAnswerDto> {
+    const newRequest = await this.supportClientService.createSupportRequest(dataReq);
     await this.supportService.sendMessage({
-      authorId: body.userId,
-      supportRequestId: newRequest.id,
-      text: body.text,
+      authorId: dataReq.userId,
+      chatId: newRequest.id,
+      text: dataReq.text,
     });
 
-    const unReadCount = await this.supportClientService.getUnreadCount(
+    const count = await this.supportClientService.getUnreadCount(
       newRequest.id,
     );
-
+// console.log(newRequest.createdAt)
     return {
-      id: newRequest._id,
+      id: newRequest.id,
       createdAt: newRequest['createdAt'],
       isActive: newRequest.isActive,
-      hasNewMessages: unReadCount.length > 0,
+      hasNewMessages: count > 0,
     };
   }
 
-  @Roles('client', 'manager', 'admin')
   @Get()
-  findSupportRequests(@Query() params: GetChatListParams): Promise<Support[]> {
-    return this.supportService.findSupportRequests(params);
+  @SetMetadata('roles', ['client', 'manager']) 
+  async findSupportRequests(@Query() params: GetChatListParams): Promise<ChatDocument[]> {
+    return await this.supportService.findSupportRequests(params);
   }
 
-  @Roles('client', 'manager', 'admin')
+
   @Post('/sendmessage')
-  sendMessage(@Body() sendMessageDto: SendMessageDto): Promise<Message> {
-    return this.supportService.sendMessage(sendMessageDto);
+  @SetMetadata('roles', ['client', 'manager']) 
+  async sendMessage(@Body() dataSend: SendMessageDto): Promise<MessageDocument> {
+    return await this.supportService.sendMessage(dataSend);
   }
 
-  @Roles('client', 'manager', 'admin')
   @Get('/getmessages/:id')
-  getMessages(
-    @Param('id') supportRequestId: ID,
+  @SetMetadata('roles', ['client', 'manager']) 
+  async getMessages(
+    @Param('id') chatId: ID,
     @Query() data: { userId: ID },
-  ): Promise<Message[]> {
-    return this.supportService.getMessages(supportRequestId, data.userId);
+  ): Promise<MessageDocument[]> {
+    return await this.supportService.getMessages(chatId, data.userId);
   }
 
-  @Roles('client', 'manager', 'admin')
   @Post('/readmessages')
-  markMessagesAsRead(
-    @Body() markMessagesAsReadDto: MarkMessagesAsReadDto,
+  @SetMetadata('roles', ['client', 'manager']) 
+  async readMessages(
+    @Body() dataMark: MarkMessagesAsReadDto,
     @Request() request: any,
-  ) {
+  ): Promise<void>  {
     if (request.user?.role === 'client') {
-      this.supportClientService.markMessagesAsRead(markMessagesAsReadDto);
-    } else if (
-      request.user?.role === 'manager' ||
-      request.user?.role === 'admin'
-    ) {
-      this.supportEmployeeService.markMessagesAsRead(markMessagesAsReadDto);
+      await this.supportClientService.markMessagesAsRead(dataMark); 
+    } else {
+      await this.supportEmployeeService.markMessagesAsRead(dataMark);
     }
   }
 
-  @Roles('manager', 'admin')
   @Post('/closerequest/:id')
-  async closeRequest(@Param('id') supportRequestId: ID) {
-    await this.supportEmployeeService.closeRequest(supportRequestId);
+  @SetMetadata('roles', ['manager']) 
+  async closeRequest(@Param('id') chatId: ID): Promise<void>  {
+    await this.supportEmployeeService.closeRequest(chatId);
   }
 }

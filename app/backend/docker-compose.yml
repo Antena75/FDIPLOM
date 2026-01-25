@@ -18,7 +18,7 @@ services:
       # ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
       ME_CONFIG_BASICAUTH: false
-  # hotel_booking_service:
+  # libraries_service:
   #   image: node:22.20
   #   working_dir: /app
   #   volumes:

@@ -2,7 +2,7 @@ import iziToast from "izitoast";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 // import { useNavigate } from "react-router-dom";
-import useFetchData from "../../api/useFetchData";
+import API from "../../api/API";
 // import { useAppDispatch } from "../../store/hooks";
 // import { register } from "../../store/user/userSlice";
 // import { login } from "../../store/user/userSlice";
@@ -16,7 +16,7 @@ function FormRegister() {
     password: '',
     
   });
-  const { authUser } = useFetchData();
+  const { usersAPI } = API();
   // const dispatch = useAppDispatch();
   // const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ function FormRegister() {
         return;
       }
 
-      authUser.register(regData)
+      usersAPI.register(regData)
         .then(() => {
           // register({ role: result.data.role, id: result.data.id });
           // dispatch(login({ token: result.data.token, role: result.data.role, id: result.data.id }));

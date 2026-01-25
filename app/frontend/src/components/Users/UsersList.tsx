@@ -1,14 +1,14 @@
 import iziToast from "izitoast";
 import { useEffect, useState } from "react";
-import useFetchData from "../../api/useFetchData";
+import API from "../../api/API";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUsersState } from "../../store/users/usersSlice";
+import { setUsersState } from "../../store/slices/usersSlice";
 import LoaderMain from "../Loader/LoaderMain";
 import UsersTable from "./UsersTable";
 
 function UsersList() {
   const [error, setError] = useState<boolean>(false);
-  const { usersApi } = useFetchData();
+  const { usersAPI } = API();
   const usersState = useAppSelector(state => state.users);
   const dispatch = useAppDispatch();
 
@@ -17,7 +17,7 @@ function UsersList() {
 
     dispatch(setUsersState({ loading: true }));
 
-    usersApi.search({
+    usersAPI.search({
       limit: usersState.limit,
       offset: usersState.offset,
       email: usersState.email,

@@ -1,5 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
-// import { ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
@@ -18,7 +17,7 @@ dotenv.config();
       // secret: "SECRET",
       signOptions: { expiresIn: "1h" },
     }),
-    forwardRef(() => UsersModule),
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

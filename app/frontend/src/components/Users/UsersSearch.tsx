@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUsersState } from "../../store/users/usersSlice";
+import { setUsersState } from "../../store/slices/usersSlice";
 import UsersList from "./UsersList";
 import UsersSearchForm from "./UsersSearchForm";
 
@@ -18,7 +18,7 @@ function UsersSearch() {
   return (
     <Container className="bg-white rounded shadow-sm p-2">
       <Container>
-        <p className="fs-2 fw-semibold">Поиск Пользователя</p>
+        <p className="fs-2 fw-semibold">Поиск пользователя</p>
         <UsersSearchForm />
       </Container>
       <UsersList />

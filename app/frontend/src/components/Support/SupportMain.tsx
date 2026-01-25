@@ -1,7 +1,8 @@
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { useAppSelector } from "../../store/hooks";
-import SupportForm from "./SupportForm";
+// import SupportForm from "./SupportForm";
 import SupportList from "./SupportList";
+import { Link } from "react-router-dom";
 
 function SupportMain() {
   const user = useAppSelector(state => state.user);
@@ -11,8 +12,10 @@ function SupportMain() {
       <Container>
         <p className="fs-2 fw-semibold">Список обращений</p>
         {user.role === 'client' &&
-          <SupportForm />
-        }
+        <Link to={'/request/add'} className="ms-auto">
+            <Button variant="success">Добавить обращение</Button>
+        </Link> 
+        }       
       </Container>
       <SupportList />
     </Container>

@@ -1,68 +1,83 @@
 import {
-  BadRequestException,
+  // HttpException,
+  // HttpStatus,
+  // BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
-import { ID } from '../../supports/types/type.id';
-import { CreateUserDto } from './interfaces/createuser.dto';
-import { SearchUsersDto } from './interfaces/searchuser.dto';
-import { Users } from './schema/users.schema';
-// import { RegisterDto } from '../auth/interfaces/register.dto';
+import { Model } from 'mongoose';
+import { ID } from '../type.id';
+import { CreateUserDto } from './interfaces/create.user';
+import { SearchUsersDto } from './interfaces/search.user';
+import { Users, UsersDocument } from './users.schema';
+import { RegisterUserDto } from './interfaces/register.user';
+import { ReturnDataDto } from '../auth/interfaces/returndata';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(Users.name) private usersModel: Model<Users>) {}
 
-  async create(createUserDto: CreateUserDto): Promise<Users> {
-  // async create(createUserDto: RegisterDto): Promise<Users> {
+  async create(createUserDto: CreateUserDto): Promise<UsersDocument> {
     try {
-      const createdUser = new this.usersModel(createUserDto);
-      return createdUser.save();
-    } catch (error) {
-      console.log('[ERROR]: UsersService.create error:');
-      console.error(error);
+      const user = new this.usersModel(createUserDto);
+      return user.save();
+    } catch (e) {
+      console.error(e);
     }
   }
 
-  async findAll(params: Partial<SearchUsersDto>): Promise<Users[]> {
+  async findAll(params: Partial<SearchUsersDto>): Promise<UsersDocument[]> {
     const { limit, offset, email, name, contactPhone } = params;
     const query = {
       email: { $regex: new RegExp(email, 'i') },
       name: { $regex: new RegExp(name, 'i') },
       contactPhone: { $regex: new RegExp(contactPhone, 'i') },
     };
-    return this.usersModel
-      .find(query)
+    return await this.usersModel.find(query)
       .limit(limit ?? 0)
       .skip(offset ?? 0)
-      .select('email name contactPhone role');
+      // .select('email name contactPhone role');
   }
 
-  async findById(id: ID): Promise<Users> {
-    const isValidId = mongoose.isValidObjectId(id);
-    if (!isValidId) {
-      throw new BadRequestException('Некорректный ID пользователя!');
-    }
-
+  async findById(id: ID): Promise<UsersDocument> {
     const user = await this.usersModel.findById(id);
     if (!user) {
       throw new NotFoundException('Пользователь не найден!');
     }
-
     return user;
   }
 
-  async findByEmail(email: string): Promise<Users> | null {
+  async findByEmail(email: string): Promise<UsersDocument> | null{
     const user = await this.usersModel.findOne({ email });
-
     return user;
   }
 
-  async updateRole(userId: ID, role: string): Promise<Users> {
-    return await this.usersModel
-      .findByIdAndUpdate({ _id: userId }, { $set: { role } }, { new: true })
-      .select('email');
+  async register(dataReg: RegisterUserDto): Promise<ReturnDataDto> {
+    const { email, password, name, contactPhone, role } = dataReg;
+    const user = await this.findByEmail(dataReg.email);
+    if (user) {
+      throw new NotFoundException('Пользователь уже зарегистрирован!');
+      // throw new HttpException(
+      //   {
+      //     status: HttpStatus.BAD_REQUEST, // 400
+      //     error: `Пользователь уже зарегистрирован!`,
+      //   },
+      //   HttpStatus.BAD_REQUEST,
+      //   {cause: `Пользователь уже зарегистрирован!`,},
+      // );
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newUser = await this.create({
+      email,
+      passwordHash,
+      name,
+      contactPhone: contactPhone || 'Не указан',
+      role: role || 'client'
+    });
+
+    return { id: newUser.id, email: newUser.email, name: newUser.name};
   }
 }

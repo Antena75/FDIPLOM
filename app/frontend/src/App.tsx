@@ -5,33 +5,34 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import useFetchData from "./api/useFetchData";
+import useFetchData from "./api/API";
 import ChatMain from "./components/Chat/ChatMain";
 import ErrorMain from "./components/Error/ErrorMain";
 import HeaderMain from "./components/Header/HeaderMain";
-import HotelPageMain from "./components/Hotels/HotelPage/HotelPageMain";
-import HotelRoomUpdateMain from "./components/Hotels/HotelRoomUpdate/HotelRoomUpdateMain";
-import HotelsAdd from "./components/Hotels/HotelsAdd/HotelsAddMain";
-import HotelsListMain from "./components/Hotels/HotelsList/HotelsListMain";
-import HotelsRoomsAddMain from "./components/Hotels/HotelsRoomsAdd/HotelsRoomsAddMain";
-import HotelsSearch from "./components/Hotels/HotelsSearch/HotelsSearchMain";
-import HotelsUpdateMain from "./components/Hotels/HotelsUpdate/HotelsUpdateMain";
+import LibraryPageMain from "./components/Libraries/LibraryPage/LibraryPageMain";
+import BookUpdateMain from "./components/Libraries/BookUpdate/BookUpdateMain";
+import LibrariesAdd from "./components/Libraries/LibrariesAdd/LibrariesAddMain";
+import LibrariesListMain from "./components/Libraries/LibrariesList/LibrariesListMain";
+import BooksAddMain from "./components/Libraries/BooksAdd/BooksAddMain";
+import LibrariesSearch from "./components/Libraries/LibrariesSearch/LibrariesSearchMain";
+import LibrariesUpdateMain from "./components/Libraries/LibrariesUpdate/LibrariesUpdateMain";
 import MenuMain from "./components/Menu/MenuMain";
-import ReservationsForm from "./components/Reservations/ReservationsForm";
-import ReservationsMain from "./components/Reservations/ReservationsMain";
+import RentalsForm from "./components/Rentals/RentalsForm";
+import RentalsMain from "./components/Rentals/RentalsMain";
 import SupportMain from "./components/Support/SupportMain";
+import SupportAdd from "./components/Support/SupportAdd";
 import UsersSearch from "./components/Users/UsersSearch";
-import UsersAdd from "./components/Users/UsersAdd";
-import Users from "./components/Users/UsersPage";
-import { getToken } from "./helpers/localStorage.helpers";
-import { SocketClient } from "./socket/SocketClient";
+import UserAdd from "./components/Users/UserAdd";
+import Users from "./components/Users/UsersMain";
+import { getToken } from "./tokens/token";
+// import { SocketClient } from "./socket/SocketClient";
 import { useAppDispatch } from "./store/hooks";
-import { login, logout } from "./store/user/userSlice";
+import { login, logout } from "./store/slices/userSlice";
 
 function App() {
-  SocketClient();
+  // SocketClient();
   const dispatch = useAppDispatch();
-  const { authUser } = useFetchData();
+  const { authUserAPI } = useFetchData();
 
   const checkAuth = async () => {
     const token = getToken();
@@ -44,7 +45,7 @@ function App() {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         const { email } = JSON.parse(jsonPayload);
-        authUser.getInfo(email)
+        authUserAPI.getInfo(email)
           .then(result => {
             dispatch(login({ token, role: result.data.role, id: result.data.id }));
           })
@@ -71,19 +72,20 @@ function App() {
           </Col>
           <Col sm={9}>
             <Routes>
-              <Route path="/" element={<HotelsSearch />} />
-              <Route path="/all-hotels" element={<HotelsListMain />} />
-              <Route path="/add-hotel" element={<HotelsAdd />} />
-              <Route path="/update-hotel" element={<HotelsUpdateMain />} />
-              <Route path="/add-room" element={<HotelsRoomsAddMain />} />
-              <Route path="/update-room" element={<HotelRoomUpdateMain />} />
+              <Route path="/" element={<LibrariesSearch />} />
+              <Route path="/all-libraries" element={<LibrariesListMain />} />
+              <Route path="/add-library" element={<LibrariesAdd />} />
+              <Route path="/update-library" element={<LibrariesUpdateMain />} />
+              <Route path="/add-book" element={<BooksAddMain />} />
+              <Route path="/update-book" element={<BookUpdateMain />} />
               <Route path="/users/search" element={<UsersSearch />} />
-              <Route path="/users/add" element={<UsersAdd />} />
+              <Route path="/user/add" element={<UserAdd />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/hotel" element={<HotelPageMain />} />
-              <Route path="/reservations" element={<ReservationsMain />} />
-              <Route path="/reserve-room" element={<ReservationsForm />} />
+              <Route path="/library" element={<LibraryPageMain />} />
+              <Route path="/rentals" element={<RentalsMain />} />
+              <Route path="/rental-book" element={<RentalsForm />} />
               <Route path="/requests" element={<SupportMain />} />
+              <Route path="/request/add" element={<SupportAdd />} />
               <Route path="/chat" element={<ChatMain />} />
               <Route path="*" element={<ErrorMain />} />
             </Routes>

@@ -1,7 +1,4 @@
 import {
-  // ConflictException,
-  HttpException,
-  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -9,10 +6,9 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
-import { ReturnDataDto } from './interfaces/returnData.dto';
-import { LoginDto } from './interfaces/login.dto';
-import { RegisterDto } from './interfaces/register.dto';
-import { IJwtPayload } from './interfaces/jwt.payload';
+import { ReturnDataDto } from './interfaces/returndata';
+import { LoginDto } from './interfaces/login';
+import { IJwtPayload } from './interfaces/jwtpayload';
 
 @Injectable()
 export class AuthService {
@@ -20,43 +16,6 @@ export class AuthService {
     private userService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  async register(registerDto: RegisterDto): Promise<ReturnDataDto> {
-    const { email, password, name, contactPhone, role } = registerDto;
-
-    const existUser = await this.userService.findByEmail(registerDto.email);
-    if (existUser) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST, // 400
-          error: `Пользователь ${existUser.email} уже зарегистрирован`,
-        },
-        HttpStatus.BAD_REQUEST,
-        {cause: `Пользователь ${existUser.email} уже зарегистрирован`,},
-      );
-    }
-
-    // const userData = await this.userService.findByEmail(email);
-    // if (userData) {
-    //   throw new ConflictException(
-    //     'Пользователь с указанным email уже существует!',
-    //   );
-    // }
-
-    const passwordHash = await bcrypt.hash(registerDto.password, 10);
-    const newUser = await this.userService.create({
-      email,
-      passwordHash,
-      name,
-      contactPhone: contactPhone || 'Не указан',
-      role: role || 'client'
-    });
-
-    // const token = this.jwtService.sign({ email: newUser.email });
-    // return { token, role: newUser.role, id: newUser.id };
-
-    return { role: newUser.role, id: newUser.id };
-  }
 
   async login(loginDto: LoginDto): Promise<ReturnDataDto> {
     const { email, password } = loginDto;
@@ -83,7 +42,7 @@ export class AuthService {
     };
 
     const token = await this.jwtService.signAsync(payload);
-    return { token, role: user.role, id: user.id };
+    return { token, role: user.role, id: user.id, name: user.name, email: user.email};
   }
 
   async checkAuth(data: {

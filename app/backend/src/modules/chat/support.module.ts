@@ -2,20 +2,22 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from '../users/users.module';
 import { Message, MessageSchema } from './schemas/message.schema';
-import { Support, SupportSchema } from './schemas/support.schema';
-import { SupportClientService } from './support.client.service';
+import { Chat, ChatSchema } from './schemas/chat.schema';
+import { SupportClientService } from './services/support.client.service';
 import { SupportController } from './support.controller';
-import { SupportEmployeeService } from './support.employee.service';
+import { SupportEmployeeService } from './services/support.employee.service';
 import { SupportGateway } from './support.gateway';
-import { SupportService } from './support.service';
+import { SupportService } from './services/support.service';
+// import { SocketModule } from '../socket/socket.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Support.name, schema: SupportSchema },
+      { name: Chat.name, schema: ChatSchema },
       { name: Message.name, schema: MessageSchema },
     ]),
     UsersModule,
+    // SocketModule,
   ],
   controllers: [SupportController],
   providers: [
