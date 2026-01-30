@@ -11,12 +11,7 @@ dotenv.config();
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      global: true, // делаем JwtModule глобальным для разрешения зависимости с AuthGuard
-      secret: process.env.JWT_SECRET,
-      // secret: "SECRET",
-      signOptions: { expiresIn: "1h" },
-    }),
+    JwtModule.register({ global: true, secret: process.env.JWT_SECRET, signOptions: { expiresIn: "1h" } }),
     UsersModule,
   ],
   controllers: [AuthController],

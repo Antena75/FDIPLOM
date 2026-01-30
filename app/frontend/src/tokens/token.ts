@@ -1,7 +1,6 @@
 export function getToken(): string {
   const data = localStorage.getItem('token');
   const result = data ? JSON.parse(data) : '';
-
   return result;
 }
 

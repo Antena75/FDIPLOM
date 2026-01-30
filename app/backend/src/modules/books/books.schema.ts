@@ -28,10 +28,10 @@ export class Books {
   @Prop({ required: true, default: true })
   isAvailable: boolean;
 
-  @Prop({ required: true, default: 1 })
+  @Prop({ required: true, default: '1' })
   totalCopies: string;
 
-  @Prop({ required: true, default: 1 })
+  @Prop({ required: true, default: '1' })
   availableCopies: string;
 
 }

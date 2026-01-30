@@ -5,7 +5,6 @@ import { useAppSelector } from "../../../store/hooks";
 import { setBooksState } from "../../../store/slices/booksSlice";
 import { BookData } from "../../../types/interfaces";
 import BooksItemImgs from "./BooksItemImgs";
-// import { useAuth } from "../../../hooks/useAuth";
 
 function BooksItem({ book }: { book: BookData }) {
   const isAuth = useAppSelector(state => state.user.isAuth);

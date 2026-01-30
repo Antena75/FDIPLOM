@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Query,
-  UseGuards,
-  SetMetadata
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards, SetMetadata } from '@nestjs/common';
 import { JwtGuard, RolesGuard } from 'src/modules/auth.guard';
 import { ID } from '../type.id';
 import { RentalDto } from './interfaces/Rental';
@@ -32,7 +22,6 @@ export class RentalsController {
   @SetMetadata('roles', ['manager'])
   removeRental(
     @Param('id') rentalId: ID,
-    // @Body() data: { userId: ID },
   ): Promise<RentalsDocument> {
     return this.rentalsService.removeRental(
       rentalId

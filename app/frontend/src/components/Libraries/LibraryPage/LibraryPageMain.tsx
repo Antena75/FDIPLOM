@@ -5,13 +5,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import API from "../../../api/API";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setLibrariesState } from "../../../store/slices/librariesSlice";
-import LoaderMain from "../../Loader/LoaderMain";
+import Spin from "../../Spinner/Spinner";
 import BooksList from "../Books/BooksList";
 import LibrariesListItem from "../LibrariesList/LibrariesListItem";
 
 function LibraryPageMain() {
   const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [spin, setSpin] = useState<boolean>(true);
   const role = useAppSelector(state => state.user.role);
   const librariesState = useAppSelector(state => state.libraries);
   const { librariesAPI } = API();
@@ -22,7 +22,7 @@ function LibraryPageMain() {
   
   useEffect(() => {
     setError(false);
-    setLoading(true);
+    setSpin(true);
 
     if (!queryParams.get('id')) {
       navigate('/error');
@@ -34,14 +34,11 @@ function LibraryPageMain() {
     librariesAPI.findById(id)
       .then(result => {  
         dispatch(setLibrariesState({ currentLibrary: result.data }));
-        setLoading(false);
+        setSpin(false);
       })
       .catch(err => {
         setError(true);
-        iziToast.error({
-          message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-          position: 'bottomCenter',
-        });
+        iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
       });
   }, []);
   
@@ -57,15 +54,13 @@ function LibraryPageMain() {
           }
           {role === 'admin' &&
             <Link to={`/add-book?${librariesState.currentLibrary._id}`}>
-              {/* <div className="d-grid gap-2 mb-3"> */}
               <Button variant="success" className="me-1 mb-2">Добавить книгу</Button>
-              {/* </div> */}
             </Link>
             }
         </Container>
       </Container>
-      {loading ? (
-        <LoaderMain />
+      {spin ? (
+        <Spin />
       ) : (
         error ? (
           <p>Произошла ошибка при загрузке библиотеки!</p>

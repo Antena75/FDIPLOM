@@ -1,18 +1,8 @@
 import fetchData from './fetchData';
-import {
-  RegData,
-  SearchLibrariesDto,
-  SearchBooksDto,
-  SearchUsersDto,
-  AddRentalDto,
-  SearchRentalsDto,
-  CreateSupportRequestDto,
-  GetChatListParams,
-  SendMessageDto,
-  MarkMessagesAsReadDto,
-} from '../types/interfaces';
-
+import { RegData, SearchLibrariesDto, SearchBooksDto, SearchUsersDto, AddRentalDto,SearchRentalsDto, 
+  CreateSupportRequestDto, GetChatListParams, SendMessageDto, MarkMessagesAsReadDto,} from '../types/interfaces';
 export default function API() {
+  
   const usersAPI = {
     search(searchParams: Partial<SearchUsersDto>) {
       const result = fetchData('users', { method: 'GET', params: searchParams });
@@ -84,7 +74,7 @@ export default function API() {
     },
   }
 
-  const supportRequestAPI = {
+  const supportchatAPI = {
     createRequest(data: CreateSupportRequestDto) {
       const result = fetchData('support', { method: 'POST', data });
       return result;
@@ -97,21 +87,21 @@ export default function API() {
       const result = fetchData('support/sendmessage', { method: 'POST', data });
       return result;
     },
-    getMessages(supportRequestId: string, userId: string) {
-      const result = fetchData(`support/getmessages/${supportRequestId}`, { method: 'GET', params: { userId } });
+    getMessages(chatId: string, userId: string) {
+      const result = fetchData(`support/getmessages/${chatId}`, { method: 'GET', params: { userId } });
       return result;
     },
     readMessages(data: MarkMessagesAsReadDto) {
       const result = fetchData('support/readmessages', { method: 'POST', data });
       return result;
     },
-    closeRequest(supportRequestId: string) {
-      const result = fetchData(`support/closerequest/${supportRequestId}`, { method: 'POST' });
+    closeRequest(chatId: string) {
+      const result = fetchData(`support/closerequest/${chatId}`, { method: 'POST' });
       return result;
     },
   }
 
   return {
-    usersAPI, authUserAPI, librariesAPI, booksAPI, rentalsAPI, supportRequestAPI
+    usersAPI, authUserAPI, librariesAPI, booksAPI, rentalsAPI, supportchatAPI
   };
 }

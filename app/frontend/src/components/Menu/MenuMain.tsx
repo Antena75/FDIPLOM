@@ -1,6 +1,5 @@
 import { ListGroup } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-// import { useAuth } from "../../hooks/useAuth";
 import { useAppSelector } from "../../store/hooks";
 
 function MenuMain() {

@@ -7,7 +7,6 @@ export function UploadFiles(): Type<NestInterceptor> {
   return FilesInterceptor('images', 5, {
     storage: diskStorage({
       destination: path.join(__dirname, '..', '..', '..', '/frontend/public/libraries'),
-      // destination: '../frontend/public/libraries',
       filename: (req, file, cb) => {
         const filename = `${Date.now()}${path.extname(file.originalname)}`;
         cb(null, filename);

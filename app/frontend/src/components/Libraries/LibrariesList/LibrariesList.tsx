@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import API from "../../../api/API";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setLibrariesState } from "../../../store/slices/librariesSlice";
-import LoaderMain from "../../Loader/LoaderMain";
+import Spin from "../../Spinner/Spinner";
 import LibrariesListItems from "./LibrariesListItems";
 
 function LibrariesList() {
@@ -15,31 +15,28 @@ function LibrariesList() {
   useEffect(() => {
     setError(false);
 
-    dispatch(setLibrariesState({ loading: true }));
+    dispatch(setLibrariesState({ spin: true }));
 
     librariesAPI.search({
       limit: librariesState.limit, offset: librariesState.offset, name: librariesState.nameSearch,
     })
       .then(result => {  
         if (result.data.length > 0) {
-          dispatch(setLibrariesState({ list: result.data, loading: false }));
+          dispatch(setLibrariesState({ list: result.data, spin: false }));
         } else {
-          dispatch(setLibrariesState({ offset: 0, loading: false }));
+          dispatch(setLibrariesState({ offset: 0, spin: false }));
         }
       })
       .catch(err => {
         setError(true);
-        iziToast.error({
-          message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-          position: 'bottomCenter',
-        });
+        iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
       });
   }, [librariesState.offset, librariesState.nameSearch]);
 
   return (
     <>
-      {librariesState.loading ? (
-        <LoaderMain />
+      {librariesState.spin? (
+        <Spin />
       ) : (
         error ? (
           <p>Произошла ошибка при загрузке списка!</p>

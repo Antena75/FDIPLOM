@@ -17,37 +17,19 @@ function FormAuth() {
     try {
       e.preventDefault();
 
-      // if (email.length === 0) {
-      //   iziToast.warning({
-      //     message: 'Введите почту!',
-      //     position: 'bottomCenter',
-      //   });
-      //   return;
-      // }
-
       if (password.length < 6) {
-        iziToast.warning({
-          message: 'Пароль должен содержать 6 и более символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Пароль - не менее 6 символов!', position: 'bottomCenter' });
         return;
       }
 
       authUserAPI.login(email, password)
         .then(result => {
-          dispatch(login({ token: result.data.token, role: result.data.role, id: result.data.id }));
-          iziToast.success({
-            message: 'Вы успешно авторизовались в системе',
-            position: 'bottomCenter',
-          });
+          dispatch(login({ token: result.data.token, role: result.data.role, id: result.data.id,  email: result.data.email }));
+          iziToast.success({ message: 'Вы успешно авторизовались', position: 'bottomCenter' });
           navigate('/');
         })
         .catch(err => {    
-          iziToast.error({
-            message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-            position: 'bottomCenter',
-          });
-        });
+          iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });});
     } catch (error) {
       console.error(error);
     }

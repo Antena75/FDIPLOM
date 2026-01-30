@@ -9,9 +9,7 @@ import { Rentals, RentalsSchema } from './rentals.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Rentals.name, schema: RentalsSchema },
-    ]),
+    MongooseModule.forFeature([{ name: Rentals.name, schema: RentalsSchema }]),
     UsersModule,
     LibrariesModule,
     BooksModule,

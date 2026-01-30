@@ -1,16 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  UploadedFiles,
-  UseGuards,
-  UseInterceptors,
-  SetMetadata
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query,
+  UploadedFiles, UseGuards, UseInterceptors, SetMetadata } from '@nestjs/common';
 import { JwtGuard, RolesGuard } from 'src/modules/auth.guard';
 import { UploadFiles } from 'src/modules/uploadfiles';
 import { ID } from '../type.id';
@@ -33,10 +22,7 @@ export class LibrariesController {
     @Body() dataLibrary: CreateLibraryDto,
   ): Promise<LibrariesDocument> {
     const data = { ...dataLibrary };
-
-    if (images?.length) {
-      data.images = images.map((img) => img.filename);
-    }
+    if (images?.length) { data.images = images.map((img) => img.filename); }
     return this.librariesService.create(data);
   }
 
@@ -49,11 +35,7 @@ export class LibrariesController {
     @Body() dataLibrary: UpdateLibraryDto,
     @UploadedFiles() images: Array<Express.Multer.File>,
   ): Promise<LibrariesDocument> {
-    return this.librariesService.update(
-      libraryId,
-      dataLibrary,
-      images.map((img) => img.filename),
-    );
+    return this.librariesService.update( libraryId, dataLibrary, images.map((img) => img.filename) );
   }
 
   @Get()

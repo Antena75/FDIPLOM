@@ -6,7 +6,7 @@ interface BooksState {
   limit: number,
   titleSearch: string,
   authorSearch: string,
-  loading: boolean,
+  spin: boolean,
   list: BookData[],
   currentBook: BookData,
 }
@@ -16,7 +16,7 @@ const initialState: BooksState = {
   limit: 3,
   titleSearch: '',
   authorSearch: '',
-  loading: false,
+  spin: false,
   list: [],
   currentBook: {
     _id: '',
@@ -27,8 +27,8 @@ const initialState: BooksState = {
     description: '',
     images: [],
     isAvailable: true,
-    totalCopies: '1',
-    availableCopies: '1',
+    totalCopies: '',
+    availableCopies: '',
   },
 }
 

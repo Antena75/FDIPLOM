@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserData } from '../../types/interfaces';
 
 interface UsersState {
-  loading: boolean;
+  spin: boolean;
   offset: number,
   limit: number,
   email: string,
@@ -13,7 +13,7 @@ interface UsersState {
 }
 
 const initialState: UsersState = {
-  loading: false,
+  spin: false,
   offset: 0,
   limit: 10,
   email: '',

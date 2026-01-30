@@ -1,16 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  UploadedFiles,
-  UseGuards,
-  UseInterceptors,
-  SetMetadata
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query,
+  UploadedFiles, UseGuards, UseInterceptors, SetMetadata } from '@nestjs/common';
 import { UploadFiles } from 'src/modules/uploadfiles';
 import { JwtGuard,  RolesGuard} from '../auth.guard';
 import { ID } from '../type.id';
@@ -33,11 +22,7 @@ export class BooksController {
     @UploadedFiles() images: Array<Express.Multer.File>,
   ): Promise<BooksDocument> {
     const data = { ...dataBook };
-
-    if (images?.length) {
-      data.images = images.map((img) => img.filename);
-    }
-
+    if (images?.length) { data.images = images.map((img) => img.filename); }
     return this.booksService.create(data);
   }
 
@@ -50,11 +35,7 @@ export class BooksController {
     @Body() dataBook: UpdateBookDto,
     @UploadedFiles() images: Array<Express.Multer.File>,
   ): Promise<BooksDocument> {
-    return this.booksService.update(
-      bookId,
-      dataBook,
-      images.map((img) => img.filename),
-    );
+    return this.booksService.update( bookId, dataBook, images.map((img) => img.filename) );
   }
 
   @Get()

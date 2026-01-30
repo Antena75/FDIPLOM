@@ -29,12 +29,10 @@ export class CreateBookDto {
   @IsOptional()
   readonly images?: Express.Multer.File[] | string[];
 
-  @IsNotEmpty({message: 'totalCopies обязательное поле',})
   @IsString()
-  readonly totalCopies: number;
+  readonly totalCopies?: string;
 
-  @IsNotEmpty({message: 'availableCopies обязательное поле',})
   @IsString()
-  readonly availableCopies: number;
+  readonly availableCopies?: string;
 }
 

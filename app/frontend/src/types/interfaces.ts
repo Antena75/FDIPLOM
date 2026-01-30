@@ -39,7 +39,6 @@ export interface SearchLibrariesDto {
   limit?: number;
   offset?: number;
   name?: string;
-  // address?: string;
 }
 
 export interface SearchBooksDto {

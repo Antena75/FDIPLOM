@@ -5,7 +5,7 @@ interface LibrariesState {
   offset: number,
   limit: number,
   nameSearch: string,
-  loading: boolean,
+  spin: boolean,
   list: LibraryData[],
   currentLibrary: LibraryData,
 }
@@ -14,7 +14,7 @@ const initialState: LibrariesState = {
   offset: 0,
   limit: 3,
   nameSearch: '',
-  loading: false,
+  spin: false,
   list: [],
   currentLibrary: {
     _id: '',

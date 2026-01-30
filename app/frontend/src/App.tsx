@@ -1,12 +1,8 @@
 import { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import useFetchData from "./api/API";
-import ChatMain from "./components/Chat/ChatMain";
+import ChatMain from "./components/Support/ChatMain";
 import ErrorMain from "./components/Error/ErrorMain";
 import HeaderMain from "./components/Header/HeaderMain";
 import LibraryPageMain from "./components/Libraries/LibraryPage/LibraryPageMain";
@@ -25,12 +21,12 @@ import UsersSearch from "./components/Users/UsersSearch";
 import UserAdd from "./components/Users/UserAdd";
 import Users from "./components/Users/UsersMain";
 import { getToken } from "./tokens/token";
-// import { SocketClient } from "./socket/SocketClient";
+import { SocketClient } from "./message/socket/SocketClient";
 import { useAppDispatch } from "./store/hooks";
 import { login, logout } from "./store/slices/userSlice";
 
 function App() {
-  // SocketClient();
+  SocketClient();
   const dispatch = useAppDispatch();
   const { authUserAPI } = useFetchData();
 
@@ -47,7 +43,7 @@ function App() {
         const { email } = JSON.parse(jsonPayload);
         authUserAPI.getInfo(email)
           .then(result => {
-            dispatch(login({ token, role: result.data.role, id: result.data.id }));
+            dispatch(login({ token, role: result.data.role, id: result.data.id, email }));
           })
           .catch(() => {
             dispatch(logout());

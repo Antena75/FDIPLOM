@@ -17,34 +17,19 @@ function LibrariesAddForm() {
       e.preventDefault();
 
       if (name.length < 5 && name.length > 50) {
-        iziToast.warning({
-          message: 'Вне диапозона 5 - 50 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Вне диапозона 5 - 50 символов!', position: 'bottomCenter' });
         return;
       }
-
       if (address.length < 5 && address.length > 100) {
-        iziToast.warning({
-          message: 'Вне диапозона 5 - 100 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Вне диапозона 5 - 100 символов!', position: 'bottomCenter' });
         return;
       }
-
       if (description.length > 0 && description.length > 200) {
-        iziToast.warning({
-          message: 'Превышает 200 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Превышает 200 символов!', position: 'bottomCenter' });
         return;
       }
-
       if (Object.keys(images).length > 5) {
-        iziToast.warning({
-          message: 'Больше 5 картинок!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Больше 5 картинок!', position: 'bottomCenter' });
         return;
       }
 
@@ -62,10 +47,7 @@ function LibrariesAddForm() {
       }
       
       if (!isExtValid) {
-        iziToast.warning({
-          message: 'Формат не соответствует jpg, jpeg, png, webp!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Формат не соответствует jpg, jpeg, png, webp!', position: 'bottomCenter' });
         return;
       }
 
@@ -82,18 +64,12 @@ function LibrariesAddForm() {
 
       librariesAPI.addLibrary(formData)
         .then(result => {
-          iziToast.success({
-            message: `Библиотека ${result.data.title} успешно добавлена`,
-            position: 'bottomCenter',
-          });
+          iziToast.success({ message: `Библиотека ${result.data.title} успешно добавлена`, position: 'bottomCenter' });
 
           navigate('/all-libraries');
         })
         .catch(err => {
-          iziToast.error({
-            message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-            position: 'bottomCenter',
-          });
+          iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
       
     } catch (error) {

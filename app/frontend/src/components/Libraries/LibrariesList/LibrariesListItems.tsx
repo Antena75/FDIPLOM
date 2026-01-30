@@ -12,13 +12,12 @@ function LibrariesListItems(data: LibrariesList) {
   const librariesState = useAppSelector(state => state.libraries);
   const dispatch = useAppDispatch();
   const { list } = data;
-  // console.log(data)
 
   const handleNextPage = async (data: string) => {
     try {
-      if (data === 'plus') {
+      if (data === 'next') {
         dispatch(setLibrariesState({ offset: librariesState.offset + librariesState.limit }));
-      } else if (data === 'minus') {
+      } else if (data === 'back') {
         dispatch(setLibrariesState({ offset: librariesState.offset - librariesState.limit }));
       }
     } catch (error) {
@@ -39,20 +38,18 @@ function LibrariesListItems(data: LibrariesList) {
           )}
           <Pagination className="mt-3">
             {librariesState.offset > 0 && 
-              <Pagination.Item onClick={() => handleNextPage('minus')}>
+              <Pagination.Item onClick={() => handleNextPage('back')}>
                 Назад
               </Pagination.Item>
             }
             {librariesState.list.length >= librariesState.limit && 
-              <Pagination.Item onClick={() => handleNextPage('plus')}>
+              <Pagination.Item onClick={() => handleNextPage('next')}>
                 Дальше
               </Pagination.Item>
             }
           </Pagination>
         </>
-        
       )}
-      
     </>
   )
 }

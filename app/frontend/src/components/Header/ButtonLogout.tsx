@@ -10,10 +10,7 @@ function ButtonLogout() {
 
   const handleLogout = () => {
     dispatch(logout());
-    iziToast.success({
-      message: 'Вы успешно вышли из системы',
-      position: 'bottomCenter',
-    });
+    iziToast.success({ message: 'Вы успешно вышли из системы', position: 'bottomCenter' });
     navigate('/');
   }
 

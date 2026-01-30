@@ -3,23 +3,18 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/API";
-// import { useAppDispatch } from "../../store/hooks";
-// import { register } from "../../store/user/userSlice";
-// import { login } from "../../store/user/userSlice";
 import { RegData } from "../../types/interfaces";
-// import { setUsersState } from "../../store/users/usersSlice";
-// import { SearchUsersDto } from "../../types/interfaces";
+
 
 function UserAddForm() {
   const [regData, setRegData] = useState<RegData>({
     email: '',
     name: '',
-    // contactPhone: '',
+    contactPhone: '',
     password: '',
     role:''
   });
   const { usersAPI } = API();
-  // const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const regHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,38 +22,22 @@ function UserAddForm() {
       e.preventDefault();
 
       if (regData.password.length < 6) {
-        iziToast.warning({
-          message: 'Пароль должен содержать 6 и более символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Пароль должен содержать 6 и более символов!', position: 'bottomCenter' });
         return;
       }
-
       if (regData.role !== 'admin' && regData.role !== 'client' && regData.role !== 'manager' && regData.role !== '') {
-        iziToast.warning({
-          message: 'Роль одна из: admin manager client',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Роль одна из: admin manager client', position: 'bottomCenter' });
         return;
       }
 
       usersAPI.register(regData)
         .then(() => {
-          // // register({ role: result.data.role, id: result.data.id });
-          // // dispatch(login({ token: result.data.token, role: result.data.role, id: result.data.id }));
-          // dispatch(register({ role: result.data.role, id: result.data.id }));
-          iziToast.success({
-            message: 'Вы успешно создали',
-            position: 'bottomCenter',
-          });     
+          iziToast.success({ message: 'Вы успешно зарегистрировали пользователя', position: 'bottomCenter' });     
           navigate('/users');
 
         })
         .catch(err => {    
-          iziToast.error({
-            message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-            position: 'bottomCenter',
-          });
+          iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
     } catch (error) {
       console.error(error);

@@ -1,10 +1,9 @@
 import iziToast from "izitoast";
 import { useEffect, useState } from "react";
-// import { Container } from "react-bootstrap";
 import API from "../../../api/API";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setBooksState } from "../../../store/slices/booksSlice";
-import LoaderMain from "../../Loader/LoaderMain";
+import Spin from "../../Spinner/Spinner";
 import BooksItems from "./BooksItems";
 import BooksSearch from "../BooksSearch/BooksSearchMain";
 
@@ -18,7 +17,7 @@ function BooksList() {
   useEffect(() => {
     setError(false);
 
-    dispatch(setBooksState({ loading: true }));
+    dispatch(setBooksState({ spin: true }));
     booksAPI.search({
       limit: booksState.limit,
       offset: booksState.offset,
@@ -29,25 +28,22 @@ function BooksList() {
     })
       .then(result => { 
         if (result.data.length > 0) {
-          dispatch(setBooksState({ list: result.data, loading: false }));
+          dispatch(setBooksState({ list: result.data, spin: false }));
         } else {
-          dispatch(setBooksState({ offset: 0, loading: false, list: [] }));
+          dispatch(setBooksState({ offset: 0, spin: false, list: [] }));
         }
       })
       .catch(err => {
         setError(true);
-        iziToast.error({
-          message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-          position: 'bottomCenter',
-        });
+        iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
       });
   }, [booksState.offset, booksState.titleSearch, booksState.authorSearch]);
 
   return (
     <>
       <BooksSearch />
-      {booksState.loading ? (
-        <LoaderMain />
+      {booksState.spin ? (
+        <Spin />
       ) : (
         error ? (
           <p>Произошла ошибка при загрузке списка!</p>

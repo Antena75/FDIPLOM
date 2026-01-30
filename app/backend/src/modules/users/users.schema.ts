@@ -5,10 +5,7 @@ export type UsersDocument = HydratedDocument<Users>;
 
 @Schema()
 export class Users extends Document {
-  @Prop({
-    required: true,
-    unique: [true, 'Пользователь с данным email уже зарегистрирован!'],
-  })
+  @Prop({ required: true, unique: [true, 'Пользователь уже зарегистрирован!'] })
   email: string;
 
   @Prop({ required: true })
@@ -20,7 +17,7 @@ export class Users extends Document {
   @Prop()
   contactPhone: string;
 
-  @Prop({ default: 'client' })
+  @Prop({ required: true, default: 'client' })
   role: string;
 }
 

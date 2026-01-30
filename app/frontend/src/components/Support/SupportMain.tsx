@@ -1,6 +1,5 @@
 import { Container, Button } from "react-bootstrap";
 import { useAppSelector } from "../../store/hooks";
-// import SupportForm from "./SupportForm";
 import SupportList from "./SupportList";
 import { Link } from "react-router-dom";
 

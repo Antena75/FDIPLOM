@@ -21,10 +21,7 @@ function RentalsForm() {
       const start = new Date(dateStart);
       const end = new Date(dateEnd);
       if (start >= end || start < new Date(Date.now())) {
-        iziToast.error({
-          message: 'Не корректные даты!',
-          position: 'bottomCenter',
-        });
+        iziToast.error({ message: 'Не корректные даты!', position: 'bottomCenter' });
         return;
       }
 
@@ -38,17 +35,11 @@ function RentalsForm() {
 
       rentalsAPI.addRental(data)
         .then(() => {          
-          iziToast.success({
-            message: `Вы успешно арендовали книгу "${currentBook.title}" в библиотеке "${currentLibrary.name}"`,
-            position: 'bottomCenter',
-          });
+          iziToast.success({ message: `Вы успешно арендовали книгу "${currentBook.title}" в библиотеке "${currentLibrary.name}"`, position: 'bottomCenter' });
           navigate(`/rentals?id=${userId}`)
         })
         .catch(err => {
-          iziToast.error({
-            message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-            position: 'bottomCenter',
-          });
+          iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
     } catch (error) {
       console.error(error);

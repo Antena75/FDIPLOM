@@ -1,24 +1,24 @@
 import { Container, Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setLibrariesState } from "../../../store/slices/librariesSlice";
+import { setBooksState } from "../../../store/slices/booksSlice";
 import { BookData } from "../../../types/interfaces";
 import BooksItem from "./BooksItem";
 
-interface BookList {
+interface BooksList {
   list: BookData[],
 }
 
-function BooksItems(data: BookList) {
+function BooksItems(data: BooksList) {
   const booksState = useAppSelector(state => state.books);
   const dispatch = useAppDispatch();
   const { list } = data;
 
   const handleNextPage = async (data: string) => {
     try {
-      if (data === 'plus') {
-        dispatch(setLibrariesState({ offset: booksState.offset + booksState.limit }));
-      } else if (data === 'minus') {
-        dispatch(setLibrariesState({ offset: booksState.offset - booksState.limit }));
+      if (data === 'next') {
+        dispatch(setBooksState({ offset: booksState.offset + booksState.limit }));
+      } else if (data === 'back') {
+        dispatch(setBooksState({ offset: booksState.offset - booksState.limit }));
       }
     } catch (error) {
       console.error(error);
@@ -38,12 +38,12 @@ function BooksItems(data: BookList) {
           )}
           <Pagination className="mt-3">
             {booksState.offset > 0 && 
-              <Pagination.Item onClick={() => handleNextPage('minus')}>
+              <Pagination.Item onClick={() => handleNextPage('back')}>
                 Назад
               </Pagination.Item>
             }
             {booksState.list.length >= booksState.limit && 
-              <Pagination.Item onClick={() => handleNextPage('plus')}>
+              <Pagination.Item onClick={() => handleNextPage('next')}>
                 Дальше
               </Pagination.Item>
             }

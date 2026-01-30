@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
@@ -22,7 +18,7 @@ export class AuthService {
 
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new NotFoundException('Неправильный email или пароль!');
+      throw new NotFoundException('Пользователь не найден (зарегистрируйтесь)!');
     }
 
     const isPasswordMatched = await bcrypt.compare(
@@ -50,11 +46,11 @@ export class AuthService {
   }): Promise<{ role: string; id: string }> {
     const { email } = data;
 
-    const userData = await this.userService.findByEmail(email);
-    if (!userData) {
-      throw new NotFoundException('Неправильный email или пароль!');
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('Ой, Пользователь не найден!');
     }
 
-    return { role: userData.role, id: userData.id };
+    return { role: user.role, id: user.id };
   }
 }

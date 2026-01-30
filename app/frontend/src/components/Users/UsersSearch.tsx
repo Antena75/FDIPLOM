@@ -10,7 +10,8 @@ function UsersSearch() {
   const usersState = useAppSelector(state => state.users);
 
   useEffect(() => {
-    if (usersState.limit !== -1 || usersState.offset !== 0 || usersState.email.length !== 0 || usersState.name.length !== 0 || usersState.contactPhone.length !== 0) {
+    if (usersState.limit !== -1 || usersState.offset !== 0 || usersState.email.length !== 0 || 
+      usersState.name.length !== 0 || usersState.contactPhone.length !== 0) {
       dispatch(setUsersState({ offset: 0, email: '', name: '', contactPhone: '' }));
     }
   }, []);

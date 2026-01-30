@@ -6,6 +6,7 @@ interface UserState {
   role: string;
   isAuth: boolean;
   id: string | null;
+  email: string;
 }
 
 const initialState: UserState = {
@@ -13,27 +14,20 @@ const initialState: UserState = {
   role: 'client',
   isAuth: false,
   id: null,
+  email: ''
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // register: (state, action: PayloadAction<{ role: string, id: string }>) => {
-    // // register: (state, action: PayloadAction<{ token: string; role: string, id: string }>) => {
-    //   // state.token = action.payload.token;
-    //   // setToken(action.payload.token);
-    //   // state.isAuth = true;
-    //   state.role = action.payload.role;
-    //   state.id = action.payload.id;
-    // },
-    login: (state, action: PayloadAction<{ token: string, role: string, id: string }>) => {
-    // login: (state, action: PayloadAction<{ token: string; role: string, id: string }>) => {
+    login: (state, action: PayloadAction<{ token: string, role: string, id: string, email: string }>) => {
       state.token = action.payload.token;
       setToken(action.payload.token);
       state.isAuth = true;
       state.role = action.payload.role;
       state.id = action.payload.id;
+      state.email = action.payload.email;
     },
     logout: (state) => {
       Object.assign(state, initialState);
@@ -42,7 +36,6 @@ const userSlice = createSlice({
   }
 })
 
-// export const { register, login, logout } = userSlice.actions
 export const { login, logout } = userSlice.actions
 
 export default userSlice.reducer

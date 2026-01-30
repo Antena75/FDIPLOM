@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import API from "../../api/API";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUsersState } from "../../store/slices/usersSlice";
-import LoaderMain from "../Loader/LoaderMain";
+import Spin from "../Spinner/Spinner";
 import UsersTable from "./UsersTable";
 
 function UsersList() {
@@ -15,7 +15,7 @@ function UsersList() {
   useEffect(() => {
     setError(false);
 
-    dispatch(setUsersState({ loading: true }));
+    dispatch(setUsersState({ spin: true }));
 
     usersAPI.search({
       limit: usersState.limit,
@@ -26,24 +26,21 @@ function UsersList() {
     })
       .then(result => {  
         if (result.data.length > 0) {
-          dispatch(setUsersState({ list: result.data, loading: false }));
+          dispatch(setUsersState({ list: result.data, spin: false }));
         } else {
-          dispatch(setUsersState({ offset: 0, loading: false }));
+          dispatch(setUsersState({ offset: 0, spin: false }));
         }
       })
       .catch(err => {
         setError(true);
-        iziToast.error({
-          message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-          position: 'bottomCenter',
-        });
+        iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
       });
   }, [usersState.offset, usersState.email, usersState.name, usersState.contactPhone, usersState.render]);
 
   return (
     <>
-      {usersState.loading ? (
-        <LoaderMain />
+      {usersState.spin ? (
+        <Spin/>
       ) : (
         error ? (
           <p>Произошла ошибка при загрузке списка пользователей!</p>

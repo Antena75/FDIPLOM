@@ -7,10 +7,7 @@ import { LibrariesModule } from '../libraries/libraries.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Books.name, schema: BooksSchema },
-      
-    ]),
+    MongooseModule.forFeature([{ name: Books.name, schema: BooksSchema } ]),
     LibrariesModule,
   ],
   controllers: [BooksController],

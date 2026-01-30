@@ -20,9 +20,7 @@ export class JwtGuard extends AuthGuard('jwt') {
       throw err;
     }
     if (!user) {
-      throw new UnauthorizedException(
-        'Доступно только для авторизованных пользователей',
-      );
+      throw new UnauthorizedException('Пользователь не авторизован',);
     }
     return user;
   }

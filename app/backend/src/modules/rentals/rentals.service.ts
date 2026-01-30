@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  // ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ID } from '../type.id';
@@ -28,17 +23,14 @@ export class RentalsService {
     if (!user) {
       throw new NotFoundException('Пользователь не найден!');
     }
-
     const library = await this.librariesService.findById(dataRental.libraryId);
     if (!library) {
       throw new NotFoundException('Библитека не найдена!');
     }
-
     const book = await this.booksService.findById(dataRental.bookId);
     if (!book) {
       throw new NotFoundException('Книга не найдена!');
     }
-
     const count = await this.rentalsModel.countDocuments({
       bookId: dataRental.bookId,
       libraryId: dataRental.libraryId,
@@ -49,10 +41,8 @@ export class RentalsService {
     if (count !== 0) {
       throw new BadRequestException('Книга не доступна (арендована)');
     }
-    
     try {
       const rental = new this.rentalsModel(dataRental);
-      // console.log(reservation.save())
       return rental.save();
     } catch (e) {
       console.error(e);
@@ -66,7 +56,6 @@ export class RentalsService {
     if (!rental) {
       throw new NotFoundException('Аренда не найдена!');
     }
-
     try {
       return this.rentalsModel.findByIdAndDelete(rentalId);
     } catch (error) {
@@ -78,7 +67,6 @@ export class RentalsService {
     searchParams: Partial<RentalDto>,
   ): Promise<RentalsDocument[]> {
     const { userId } = searchParams;
-
     const user = await this.usersService.findById(userId);
     if (!user) {
       throw new NotFoundException('Пользователь не найден!');
@@ -88,7 +76,5 @@ export class RentalsService {
       .populate('userId', ['email'])
       .populate('libraryId', ['name'])
       .populate('bookId', ['title'])
-      // .select('-__v');
-
   }
 }

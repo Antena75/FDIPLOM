@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 function SupportForm() {
   const [text, setText] = useState<string>('');
   const userId = useAppSelector(state => state.user.id);
-  const { supportRequestAPI } = API();
+  const email = useAppSelector(state => state.user.email);
+  const { supportchatAPI } = API();
   const navigate = useNavigate();
 
   const formHandler = async (e: any) => {
@@ -16,26 +17,17 @@ function SupportForm() {
       e.preventDefault();
 
       if (text.length > 200) {
-        iziToast.warning({
-          message: 'Описание проблемы должно вмещать до 200 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Обращение должно вмещать до 200 символов!', position: 'bottomCenter' });
         return;
       }
 
-      supportRequestAPI.createRequest({ userId, text })
-        .then(() => {          
-          iziToast.success({
-            message: 'Вы успешно создали обращение',
-            position: 'bottomCenter',
-          });
-          navigate('/requests');
+      supportchatAPI.createRequest({ userId, text })
+        .then((result) => {        
+          iziToast.success({ message: 'Вы успешно создали обращение', position: 'bottomCenter' });
+          navigate(`/chat?id=${result.data.id}&email=${email}`);
         })
         .catch(err => {
-          iziToast.error({
-            message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-            position: 'bottomCenter',
-          });
+          iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
     } catch (error) {
       console.error(error);
@@ -45,8 +37,8 @@ function SupportForm() {
   return (
     <Form className="mb-3" onSubmit={formHandler}>
       <Form.Group className="mb-3">
-        <Form.Label>Введите текст нового обращения</Form.Label>
-        <Form.Control as="textarea" rows={3} className="mb-3" maxLength={200} placeholder="Введите текст нового обращения" onChange={(e) => setText(e.target.value)} required />
+        <Form.Label>Введите текст обращения</Form.Label>
+        <Form.Control as="textarea" rows={3} className="mb-3" maxLength={200} placeholder="Введите текст обращения" onChange={(e) => setText(e.target.value)} required />
       </Form.Group>
       
       <Button variant="success" type="submit">

@@ -22,34 +22,19 @@ function BooksAddForm() {
       e.preventDefault();
 
       if (title.length < 5 && title.length > 50) {
-        iziToast.warning({
-          message: 'Вне диапозона 5 - 50 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Вне диапозона 5 - 50 символов!', position: 'bottomCenter' });
         return;
       }
-
       if (author.length < 5 && author.length > 50) {
-        iziToast.warning({
-          message: 'Вне диапозона 5 - 50 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Вне диапозона 5 - 50 символов!', position: 'bottomCenter' });
         return;
       }
-
       if (description.length > 0 && description.length > 200) {
-        iziToast.warning({
-          message: 'Превышает 200 символов!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Превышает 200 символов!', position: 'bottomCenter' });
         return;
       }
-
       if (Object.keys(images).length > 10) {
-        iziToast.warning({
-          message: 'Больше 5 картинок!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Больше 5 картинок!', position: 'bottomCenter' });
         return;
       }
 
@@ -65,12 +50,8 @@ function BooksAddForm() {
           }
         }
       }
-      
       if (!isExtValid) {
-        iziToast.warning({
-          message: 'Формат не соответствует jpg, jpeg, png, webp!',
-          position: 'bottomCenter',
-        });
+        iziToast.warning({ message: 'Формат не соответствует jpg, jpeg, png, webp!', position: 'bottomCenter' });
         return;
       }
 
@@ -91,18 +72,12 @@ function BooksAddForm() {
       
       booksAPI.addBook(formData)
         .then(result => {
-          iziToast.success({
-            message: `Книга ${result.data.title} успешно добавлена`,
-            position: 'bottomCenter',
-          });
+          iziToast.success({ message: `Книга ${result.data.title} успешно добавлена`, position: 'bottomCenter' });
 
           navigate(-1);
         })
         .catch(err => {
-          iziToast.error({
-            message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-            position: 'bottomCenter',
-          });
+          iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
       
     } catch (error) {
@@ -139,12 +114,12 @@ function BooksAddForm() {
 
       <Form.Group className="mb-3">
         <Form.Label>Общее количество экземпляров</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={totalCopies} onChange={(e) => setTotalCopies(e.target.value)} required />
+        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={totalCopies} onChange={(e) => setTotalCopies(e.target.value)} />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Доступное количество экземпляров</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={availableCopies} onChange={(e) => setAvailableCopies(e.target.value)} required />
+        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={availableCopies} onChange={(e) => setAvailableCopies(e.target.value)} />
       </Form.Group>
       
       <Button variant="success" type="submit">

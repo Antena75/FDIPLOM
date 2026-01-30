@@ -1,54 +1,29 @@
-// import iziToast from "izitoast";
 import { Button, Container, Pagination, Table } from "react-bootstrap";
-// import { Button, Container, Dropdown, DropdownButton, Pagination, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import useFetchData from "../../api/useFetchData";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUsersState } from "../../store/slices/usersSlice";
 import { UserData } from "../../types/interfaces";
 
-interface propData {
+interface data {
   list: UserData[],
 }
 
-function UsersTable(data: propData) {
+function UsersTable(data: data) {
   const usersState = useAppSelector(state => state.users);
   const dispatch = useAppDispatch();
   const { list } = data;
-  // const { usersApi } = useFetchData();
 
   const handleNextPage = (data: string) => {
     try {
-      if (data === 'plus') {
+      if (data === 'next') {
         dispatch(setUsersState({ offset: usersState.offset + usersState.limit }));
-      } else if (data === 'minus') {
+      } else if (data === 'back') {
         dispatch(setUsersState({ offset: usersState.offset - usersState.limit }));
       }
     } catch (error) {
       console.error(error);
     }
   }
-
-  // const handleChangeRole = async (id: string, role: string) => {
-  //   try {
-  //     usersApi.updateRole(id, role)
-  //       .then(result => {  
-  //         iziToast.success({
-  //           message: `Пользователю ${result.data.email} успешно установлена роль "${role}"`,
-  //           position: 'bottomCenter',
-  //         });
-  //         dispatch(setUsersState({ render: !usersState.render }));
-  //       })
-  //       .catch(err => {
-  //         iziToast.error({
-  //           message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0],
-  //           position: 'bottomCenter',
-  //         });
-  //       });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 
   return (
     <Container>
@@ -82,12 +57,12 @@ function UsersTable(data: propData) {
       </Table>
       <Pagination className="mt-3">
         {usersState.offset > 0 && 
-          <Pagination.Item onClick={() => handleNextPage('minus')}>
+          <Pagination.Item onClick={() => handleNextPage('back')}>
             Назад
           </Pagination.Item>
         }
         {usersState.list.length >= usersState.limit && 
-          <Pagination.Item onClick={() => handleNextPage('plus')}>
+          <Pagination.Item onClick={() => handleNextPage('next')}>
             Дальше
           </Pagination.Item>
         }

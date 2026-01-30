@@ -2,11 +2,11 @@ import { Button, Container, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SupportRequestData } from "../../types/interfaces";
 
-interface propData {
+interface data {
   list: SupportRequestData[];
 }
 
-function SupportTable(data: propData) {
+function SupportTable(data: data) {
   const { list } = data;
 
   return (

@@ -2,8 +2,7 @@ import { Button, Container, Navbar, OverlayTrigger, Popover } from "react-bootst
 import { Link } from "react-router-dom"
 import HeaderAuth from "./HeaderAuth"
 import HeaderReg from "./HeaderReg"
-// import SocketHiddenDiv from "./SocketHiddenDiv"
-// import { useAuth } from "../../hooks/useAuth";
+import NewMessage from "./NewMessage"
 import { useAppSelector } from "../../store/hooks";
 import ButtonLogout from "./ButtonLogout";
 
@@ -61,7 +60,7 @@ function HeaderMain() {
           </div>
         </Container>
       </Navbar>
-      {/* <SocketHiddenDiv /> */}
+      <NewMessage />
     </Container>
   )
 }
