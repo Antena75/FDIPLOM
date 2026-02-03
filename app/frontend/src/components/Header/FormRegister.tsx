@@ -5,7 +5,7 @@ import API from "../../api/API";
 import { RegData } from "../../types/interfaces";
 
 function FormRegister() {
-  const [regData, setRegData] = useState<RegData>({
+  const [regData, setRegData] = useState<RegData>({   // с использованием ОБЪЕКТА
     email: '',
     name: '',
     contactPhone: '',

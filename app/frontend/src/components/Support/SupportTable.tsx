@@ -1,17 +1,12 @@
 import { Button, Container, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { SupportRequestData } from "../../types/interfaces";
+import { SupportChatDto } from "../../types/interfaces";
 
-interface data {
-  list: SupportRequestData[];
-}
-
-function SupportTable(data: data) {
-  const { list } = data;
+function SupportTable(data: SupportChatDto) {   //если не использовать any
 
   return (
     <Container>
-      {list.length > 0 ? (
+      {data.list && data.list.length > 0 ? (
         <>
           <Table striped hover className="p-2 rounded text-center">
             <thead>
@@ -24,7 +19,7 @@ function SupportTable(data: data) {
               </tr>
             </thead>
             <tbody>
-              {list.map(elem =>
+              {data.list.map(elem =>
                 <tr key={elem._id}>
                   <td>{elem.userId.name}</td>
                   <td>{elem.userId.email}</td>

@@ -43,7 +43,6 @@ export class SupportController {
   }
 
   @Get()
-  // @SetMetadata('roles', ['client', 'manager']) 
   async findChats(@Query() params: GetChatListParams): Promise<ChatDocument[]> {
     return await this.supportService.findChats(params);
   }
@@ -70,7 +69,7 @@ export class SupportController {
     @Request() request: any,
   ): Promise<void>  {
     if (request.user?.role === 'client') {
-    //   await this.supportClientService.markMessagesAsRead(dataMark); 
+    //   await this.supportClientService.markMessagesAsRead(dataMark); // на всякий случай
     // } else {
       await this.supportEmployeeService.markMessagesAsRead(dataMark);
     }

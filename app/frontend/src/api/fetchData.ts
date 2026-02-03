@@ -10,7 +10,6 @@ async function fetchData(url: string, options: object, isFormData = false, callb
         Authorization: 'Bearer ' + (getToken() || ''),
         'Content-Type': isFormData === true ? 'multipart/form-data' : 'application/json',
       },
-      // responseType: 'json',
       ...options,
     })
       .then(result => {    

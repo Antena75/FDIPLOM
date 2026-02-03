@@ -5,11 +5,12 @@ import { useAppSelector } from "../../store/hooks";
 import { GetChatListParams } from "../../types/interfaces";
 import Spin from "../Spinner/Spinner";
 import SupportTable from "./SupportTable";
+import { SupportChatData } from "../../types/interfaces";
 
 function SupportList() {
   const [error, setError] = useState<boolean>(false);
   const [spin, setSpin] = useState<boolean>(true);
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<SupportChatData[]>(); //если не использовать any
   const user = useAppSelector(state => state.user);
   const { supportchatAPI } = API();
 
@@ -42,7 +43,7 @@ function SupportList() {
         error ? (
           <p>Произошла ошибка при загрузке обращений!</p>
         ) : (
-          <SupportTable list={list} />
+          <SupportTable list = { list } />
         )
       )}
     </>

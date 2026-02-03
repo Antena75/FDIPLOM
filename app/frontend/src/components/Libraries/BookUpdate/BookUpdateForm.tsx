@@ -34,7 +34,7 @@ function BookUpdateForm() {
         iziToast.warning({ message: 'Превышает 200 символов!', position: 'bottomCenter' });
         return;
       }
-      if (Object.keys(images).length > 10) {
+      if (Object.keys(images).length > 5) {
         iziToast.warning({ message: 'Больше 5 картинок!', position: 'bottomCenter' });
         return;
       }
@@ -79,7 +79,7 @@ function BookUpdateForm() {
         .catch(err => {
           iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
-      
+
     } catch (error) {
       console.error(error);
     }

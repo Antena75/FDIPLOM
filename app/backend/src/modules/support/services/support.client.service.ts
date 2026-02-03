@@ -45,7 +45,7 @@ export class SupportClientService {
     return count;
   }
   
-  // async markMessagesAsRead(dataMark: MarkMessagesAsReadDto): Promise<void>  {
+  // async markMessagesAsRead(dataMark: MarkMessagesAsReadDto): Promise<void>  {    // на всякий случай
   //   const chat = await this.chatModel.findById(dataMark.chatId)
   //   if (!chat) {
   //     throw new NotFoundException('Обращение не найдено!');

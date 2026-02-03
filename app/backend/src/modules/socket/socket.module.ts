@@ -1,7 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { SocketService } from './socket.service';
 
-// @Global()
 @Module({
   controllers: [],
   providers: [SocketService],

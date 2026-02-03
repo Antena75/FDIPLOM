@@ -21,7 +21,7 @@ import UsersSearch from "./components/Users/UsersSearch";
 import UserAdd from "./components/Users/UserAdd";
 import Users from "./components/Users/UsersMain";
 import { getToken } from "./tokens/token";
-import { SocketClient } from "./message/socket/SocketClient";
+import { SocketClient } from "./chatsocket/socket/SocketClient";
 import { useAppDispatch } from "./store/hooks";
 import { login, logout } from "./store/slices/userSlice";
 
@@ -33,7 +33,7 @@ function App() {
   const checkAuth = async () => {
     const token = getToken();
 
-    try {
+    try {  // Проверка аутентификации (закончилось время жизни token или нет?)
       if (token) {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

@@ -46,7 +46,7 @@ function UserAddForm() {
 
   return (
     <Form className="mb-3" onSubmit={regHandler}>
-        <Form.Control type="email" className="mb-3" placeholder="Введите почту пользователя" onChange={(e) => setRegData({ ...regData, email: e.target.value })} required />
+        <Form.Control type="email" className="mb-3" placeholder="Введите почту пользователя" onChange={(e) => setRegData(reg => ({ ...reg, email: e.target.value }))} required />
         <Form.Control type="text" className="mb-3" placeholder="Введите имя пользователя" onChange={(e) => setRegData({ ...regData, name: e.target.value })} required />
         <Form.Control type="tel" className="mb-3" placeholder="Введите телефон пользователя (необязательно)" onChange={(e) => setRegData({ ...regData, contactPhone: e.target.value })} />
         <Form.Control type="password" className="mb-3" placeholder="Введите пароль пользователя (не менне 6 символов)" onChange={(e) => setRegData({ ...regData, password: e.target.value })} required />

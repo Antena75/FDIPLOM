@@ -1,5 +1,4 @@
 import {
-  // BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -47,14 +46,12 @@ export class BooksService {
     dataBook: UpdateBookDto,
     images: string[],
   ): Promise<BooksDocument> {
-    const book = await this.findById(bookId);
-    // if (book) {
+    const book = await this.findById(bookId); // Проверка наличия
     return await this.booksModel.findByIdAndUpdate(
       { _id: bookId },
       { $set: { ...dataBook, images} },
       { new: true },
     );
-  // }
   }
 
   async findById(bookId: ID): Promise<BooksDocument> {

@@ -5,7 +5,7 @@ import { ID } from '../type.id';
 import { BooksService } from '../books/books.service';
 import { LibrariesService } from '../libraries/libraries.service';
 import { UsersService } from '../users/users.service';
-import { RentalDto } from './interfaces/Rental';
+import { RentalDto } from './interfaces/rental';
 import { Rentals, RentalsDocument } from './rentals.schema';
 
 @Injectable()

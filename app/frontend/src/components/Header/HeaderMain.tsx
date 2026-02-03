@@ -17,7 +17,6 @@ function HeaderMain() {
             The Great Library
           </Link>
           <div style={{display: "flex"}}>
-          <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end" style={{marginRight: "20px"}}>
             <OverlayTrigger
               trigger="click"
@@ -39,7 +38,6 @@ function HeaderMain() {
             <ButtonLogout />
             ) : (
               <>
-          <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <OverlayTrigger
               trigger="click"

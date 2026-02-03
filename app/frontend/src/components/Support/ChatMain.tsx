@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/API";
-import { useSocketEvent } from "../../message/hooks/useSocketEvent";
+import { useSocketEvent } from "../../chatsocket/hooks/useSocketEvent";
 import { useAppSelector } from "../../store/hooks";
 import { SocketDto } from "../../types/interfaces";
 import Spin from "../Spinner/Spinner";

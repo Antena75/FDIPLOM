@@ -25,14 +25,12 @@ export class LibrariesService {
     dataLibrary: UpdateLibraryDto,
     images: string[],
   ): Promise<LibrariesDocument> {
-    const library = await this.findById(libraryId);
-    // if (library) {
+    const library = await this.findById(libraryId);  // проверка наличия
     return await this.librariesModel.findByIdAndUpdate(
       { _id: libraryId },
       { $set: { ...dataLibrary, images} },
       { new: true },
     );
-  // }
   }
 
   async findById(libraryId: ID): Promise<LibrariesDocument> {

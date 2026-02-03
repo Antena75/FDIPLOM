@@ -79,11 +79,6 @@ export interface RentalData {
   dateEnd: string,
 }
 
-export interface CreateSupportRequestDto {
-  userId: string | null;
-  text: string;
-}
-
 export interface GetChatListParams {
   userId: string | null;
   isActive: boolean;
@@ -101,12 +96,16 @@ export interface MarkMessagesAsReadDto {
   createdBefore: Date;
 }
 
-export interface SupportRequestData {
+export interface SupportChatData {
   _id: string;
   userId: UserData;
   messages: MessageData;
   isActive: boolean;
   createdAt: Date;
+}
+
+export interface SupportChatDto {
+  list?: SupportChatData [];     //если не использовать any
 }
 
 export interface MessageData {

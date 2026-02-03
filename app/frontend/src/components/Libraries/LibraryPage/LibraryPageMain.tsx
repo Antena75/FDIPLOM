@@ -56,7 +56,7 @@ function LibraryPageMain() {
             <Link to={`/add-book?${librariesState.currentLibrary._id}`}>
               <Button variant="success" className="me-1 mb-2">Добавить книгу</Button>
             </Link>
-            }
+          }
         </Container>
       </Container>
       {spin ? (

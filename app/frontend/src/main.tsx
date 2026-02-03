@@ -6,8 +6,8 @@ import App from './App.tsx';
 import './assets/css/index.css';
 import store from './store/store.ts';
 
-const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(
+ReactDOM.createRoot(document.getElementById('root')!)
+.render(
   <Provider store={store}>
     <App />
   </Provider>,

@@ -6,13 +6,16 @@ import API from "../../../api/API";
 import { useAppSelector } from "../../../store/hooks";
 
 function BooksAddForm() {
-  const [title, setTitle] = useState<string>('');
-  const [author, setAuthor] = useState<string>('');
-  const [year, setYear] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [images, setImages] = useState<any>();
-  const [totalCopies, setTotalCopies] = useState<string>('');
-  const [availableCopies, setAvailableCopies] = useState<string>('');
+  const [bookData, setBookData] = useState<any>({
+    title: '',
+    author: '',
+    year: '',
+    description: '',
+    images: [],
+    totalCopies: '',
+    availableCopies: '',
+  });
+
   const { booksAPI } = API();
   const navigate = useNavigate();
   const currentLibrary = useAppSelector(state => state.libraries.currentLibrary);
@@ -21,28 +24,28 @@ function BooksAddForm() {
     try {
       e.preventDefault();
 
-      if (title.length < 5 && title.length > 50) {
+      if (bookData.title.length < 5 && bookData.title.length > 50) {
         iziToast.warning({ message: 'Вне диапозона 5 - 50 символов!', position: 'bottomCenter' });
         return;
       }
-      if (author.length < 5 && author.length > 50) {
+      if (bookData.author.length < 5 && bookData.author.length > 50) {
         iziToast.warning({ message: 'Вне диапозона 5 - 50 символов!', position: 'bottomCenter' });
         return;
       }
-      if (description.length > 0 && description.length > 200) {
+      if (bookData.description.length > 0 && bookData.description.length > 200) {
         iziToast.warning({ message: 'Превышает 200 символов!', position: 'bottomCenter' });
         return;
       }
-      if (Object.keys(images).length > 10) {
+      if (Object.keys(bookData.images).length > 5) {
         iziToast.warning({ message: 'Больше 5 картинок!', position: 'bottomCenter' });
         return;
       }
 
       let isExtValid = true;
-      if (Object.keys(images).length > 0) {
-        for (const key in images) {
-          if (Object.prototype.hasOwnProperty.call(images, key)) {
-            const image = images[key];
+      if (bookData.images && Object.keys(bookData.images).length > 0) {
+        for (const key in bookData.images) {
+          if (Object.prototype.hasOwnProperty.call(bookData.images, key)) {
+            const image = bookData.images[key];
             if (!image.type.includes('image')) {
               isExtValid = false;
               break;
@@ -57,18 +60,18 @@ function BooksAddForm() {
 
       const formData = new FormData();
       formData.append('library', currentLibrary._id);
-      formData.append('title', title);
-      formData.append('author', author);
-      formData.append('year', year);
-      formData.append('description', description);
-      for (const key in images) {
-        if (Object.prototype.hasOwnProperty.call(images, key)) {
-          const image = images[key];
+      formData.append('title', bookData.title);
+      formData.append('author', bookData.author);
+      formData.append('year', bookData.year);
+      formData.append('description', bookData.description);
+      for (const key in bookData.images) {
+        if (Object.prototype.hasOwnProperty.call(bookData.images, key)) {
+          const image = bookData.images[key];
           formData.append('images', image);
         }
       }
-      formData.append('totalCopies', totalCopies);
-      formData.append('availableCopies', availableCopies);
+      formData.append('totalCopies', bookData.totalCopies);
+      formData.append('availableCopies', bookData.availableCopies);
       
       booksAPI.addBook(formData)
         .then(result => {
@@ -79,7 +82,7 @@ function BooksAddForm() {
         .catch(err => {
           iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
-      
+        
     } catch (error) {
       console.error(error);
     }
@@ -89,37 +92,37 @@ function BooksAddForm() {
     <Form className="mb-3" onSubmit={formHandler}>
       <Form.Group className="mb-3">
         <Form.Label>Название книги (5 - 50 символов)</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите название книги" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <Form.Control type="text" className="mb-3" placeholder="Введите название книги" value={bookData.title} onChange={e => setBookData({...bookData, title: e.target.value})} required />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Автор книги (5 - 50 символов)</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите автора книги" value={author} onChange={(e) => setAuthor(e.target.value)} required />
+        <Form.Control type="text" className="mb-3" placeholder="Введите автора книги" value={bookData.author} onChange={e => setBookData({...bookData, author: e.target.value})}  required />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Год издания</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите год издания" value={year} onChange={(e) => setYear(e.target.value)} required />
+        <Form.Control type="text" className="mb-3" placeholder="Введите год издания" value={bookData.year} onChange={e => setBookData({...bookData, year: e.target.value})}  required />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Описание (необязательно, не более 200 символов)</Form.Label>
-        <Form.Control as="textarea" rows={3} className="mb-3" maxLength={200} placeholder="Введите описание книги" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <Form.Control as="textarea" rows={3} className="mb-3" maxLength={200} placeholder="Введите описание книги" value={bookData.description} onChange={e => setBookData({...bookData, description: e.target.value})} />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Выберите фото книги (не более 5)</Form.Label>
-        <Form.Control type="file" multiple accept="image/*" onChange={(e: any) => setImages(e.target.files)}/>
+        <Form.Control type="file" multiple accept="image/*" onChange={(e: any) => setBookData({...bookData, images: e.target.files})}/>
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Общее количество экземпляров</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={totalCopies} onChange={(e) => setTotalCopies(e.target.value)} />
+        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={bookData.totalCopies} onChange={e => setBookData({...bookData, totalCopies: e.target.value})}  />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Доступное количество экземпляров</Form.Label>
-        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={availableCopies} onChange={(e) => setAvailableCopies(e.target.value)} />
+        <Form.Control type="text" className="mb-3" placeholder="Введите количество" value={bookData.availableCopies} onChange={e => setBookData({...bookData, availableCopies: e.target.value})}  />
       </Form.Group>
       
       <Button variant="success" type="submit">

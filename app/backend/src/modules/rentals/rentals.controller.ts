@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards, SetMetadata } from '@nestjs/common';
 import { JwtGuard, RolesGuard } from 'src/modules/auth.guard';
 import { ID } from '../type.id';
-import { RentalDto } from './interfaces/Rental';
+import { RentalDto } from './interfaces/rental';
 import { RentalsService } from './rentals.service';
 import { RentalsDocument } from './rentals.schema';
 

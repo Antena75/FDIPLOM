@@ -1,7 +1,8 @@
+// Сокет, подписки, слушатель + новое сообщение в чате
 import iziToast from "izitoast";
-import { useSocket } from "../../message/hooks/useSocket";
-import { useSocketEvent } from "../../message/hooks/useSocketEvent";
-import { useSocketSubscribe } from "../../message/hooks/useSocketSubscribe";
+import { useSocket } from "../../chatsocket/hooks/useSocket";
+import { useSocketEvent } from "../../chatsocket/hooks/useSocketEvent";
+import { useSocketSubscribe } from "../../chatsocket/hooks/useSocketSubscribe";
 import { SocketDto } from "../../types/interfaces";
 import { useAppSelector } from "../../store/hooks";
 

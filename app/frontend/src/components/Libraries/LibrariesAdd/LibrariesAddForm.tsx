@@ -65,13 +65,12 @@ function LibrariesAddForm() {
       librariesAPI.addLibrary(formData)
         .then(result => {
           iziToast.success({ message: `Библиотека ${result.data.title} успешно добавлена`, position: 'bottomCenter' });
-
           navigate('/all-libraries');
         })
         .catch(err => {
           iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
         });
-      
+        
     } catch (error) {
       console.error(error);
     }
