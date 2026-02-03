@@ -79,7 +79,7 @@ export interface RentalData {
   dateEnd: string,
 }
 
-export interface CreateSupportRequestDto {
+export interface CreateSupportChatDto {
   userId: string | null;
   text: string;
 }

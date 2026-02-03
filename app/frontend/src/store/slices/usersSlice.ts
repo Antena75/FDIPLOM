@@ -9,7 +9,6 @@ interface UsersState {
   name: string,
   contactPhone: string,
   list: UserData[],
-  render: boolean,
 }
 
 const initialState: UsersState = {
@@ -20,7 +19,6 @@ const initialState: UsersState = {
   name: '',
   contactPhone: '',
   list: [],
-  render: true,
 }
 
 const usersSlice = createSlice({

@@ -35,7 +35,7 @@ function UsersList() {
         setError(true);
         iziToast.error({ message: typeof err.data.message === 'string' ? err.data.message : err.data.message[0], position: 'bottomCenter' });
       });
-  }, [usersState.offset, usersState.email, usersState.name, usersState.contactPhone, usersState.render]);
+  }, [usersState.offset, usersState.email, usersState.name, usersState.contactPhone]);
 
   return (
     <>
