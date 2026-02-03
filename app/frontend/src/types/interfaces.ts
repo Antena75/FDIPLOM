@@ -79,6 +79,11 @@ export interface RentalData {
   dateEnd: string,
 }
 
+export interface CreateSupportRequestDto {
+  userId: string | null;
+  text: string;
+}
+
 export interface GetChatListParams {
   userId: string | null;
   isActive: boolean;
