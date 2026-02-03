@@ -1,6 +1,6 @@
 import fetchData from './fetchData';
 import { RegData, SearchLibrariesDto, SearchBooksDto, SearchUsersDto, AddRentalDto,SearchRentalsDto, 
-  CreateSupportRequestDto, GetChatListParams, SendMessageDto, MarkMessagesAsReadDto,} from '../types/interfaces';
+  CreateSupportChatDto, GetChatListParams, SendMessageDto, MarkMessagesAsReadDto,} from '../types/interfaces';
 export default function API() {
   
   const usersAPI = {
@@ -75,7 +75,7 @@ export default function API() {
   }
 
   const supportchatAPI = {
-    createRequest(data: CreateSupportRequestDto) {
+    createRequest(data: CreateSupportChatDto) {
       const result = fetchData('support', { method: 'POST', data });
       return result;
     },
