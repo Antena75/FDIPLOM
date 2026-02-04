@@ -11,6 +11,8 @@
    - Невозможно арендовать книгу при пересечении дат;
    - Была попытка создание базы данных на удаленном сервере (docker-compose.with.remote.DB.yml), но из России это не получается;
    - Не хватает моста между backend и frontend в docker для передачи картинок;
+   - При запуске Docker контейнера у меня выдает ошибку во frontend. Ошибка уходит при запуске в терминале следующей строчки: docker compose -f docker-compose.dev.yml run --rm frontend sh -c "npm config set registry https://registry.npmmirror.com && npm install @rollup/rollup-linux-x64-gnu --save-dev --verbose"
+    Насколько я понял, при этом устанавливается для Docker зависимость '@rollup/rollup-linux-x64-gnu'
 
 # Дипломный проект на курсе Fullstack-разработчик на JavaScript»
 
